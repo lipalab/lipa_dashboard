@@ -27,6 +27,7 @@ body = shinydashboard::dashboardBody(
                                 /* logo */
                                 .skin-blue .main-header .logo {
                                 background-color: #CDAD00;
+                                color: black;
                                 }
                                 
                                 /* logo when hovered */
@@ -37,13 +38,13 @@ body = shinydashboard::dashboardBody(
                                  /* sidebar toggle */
                                 .skin-blue .main-header .navbar .sidebar-toggle {
                                 background-color: #CDAD00;
-                                color: #ffff;
+                                color: black;
                                 }
                                 
                                 /* sidebar toggle */
                                 .skin-blue .main-header .navbar .sidebar-toggle:hover {
                                 background-color: #CDAD00;
-                                color: #ffff;
+                                color: white;
                                 }
                             
                                 /* navbar (rest of the header) */
