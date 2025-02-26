@@ -1,28 +1,50 @@
 ## https://rstudio.github.io/shinydashboard/structure.html
 
+
+date_update = "26/Feb/2024"
+
+### HEADER
 header = shinydashboard::dashboardHeader(
   title = "LIPA dashboard",
   disable = FALSE, 
   titleWidth  = 280
 )
 
+### SIDEBAR
 sidebar = shinydashboard::dashboardSidebar(
   title = "",
   width = 280,
   collapsed = FALSE,
- 
-  shinydashboard::menuItem( 
-    "tab 1", 
-    tabName = 'tab1',
-    icon =  shiny::icon('globe'), 
-    selected = FALSE
-  )
   
+  shinydashboard::sidebarMenu( 
+    
+    shinydashboard::menuItem(
+      "Geographic distribution", 
+      tabName = 'geo_dis', 
+      icon = shiny::icon('globe'),
+      selected = FALSE
+    )
+  )
 )
-
+### BODY
 body = shinydashboard::dashboardBody(
  
-  ## customizar a barra superior e lateral 
+  shinydashboard::box(
+    title = "",
+    width = 12,
+    
+    ## linha do título
+    fluidRow(
+      column(width = 12,
+             align = "center",
+             tags$h1("Title")
+      )
+      
+    )
+    
+  ),
+  
+  ### customing 
   tags$head(tags$style(HTML('
                                 /* logo */
                                 .skin-blue .main-header .logo {
@@ -41,10 +63,10 @@ body = shinydashboard::dashboardBody(
                                 color: black;
                                 }
                                 
-                                /* sidebar toggle */
+                                /* sidebar toggle when hovered */
                                 .skin-blue .main-header .navbar .sidebar-toggle:hover {
                                 background-color: #CDAD00;
-                                color: white;
+                                color: darkred;
                                 }
                             
                                 /* navbar (rest of the header) */
@@ -54,7 +76,7 @@ body = shinydashboard::dashboardBody(
                                 
                                 /* main sidebar */
                                 .skin-blue .main-sidebar {
-                                background-color: black;
+                                background-color: #222d32;
                                 }
                                 
                                 /* main background colour*/
@@ -74,8 +96,18 @@ body = shinydashboard::dashboardBody(
                                 .nav-tabs-custom>.tab-content {
                                 background: #F3F9FD;
                                 }
-                                '
-                            )
+                            
+                                .main-header {min-height: 75px}
+                            
+                                /* header 1 */
+                                .h1, h1 { 
+                                font-size: 4em;
+                                font-weight: bold;
+                                color: black;
+                                background-color: white;
+                                }
+                            
+                            ')
   ))
 
 )
