@@ -19,8 +19,14 @@ sidebar = shinydashboard::dashboardSidebar(
   shinydashboard::sidebarMenu( 
     
     shinydashboard::menuItem(
+      "Plant traits", 
+      tabName = 'traits', 
+      icon = shiny::icon('leaf'),
+      selected = TRUE
+    ),
+    shinydashboard::menuItem(
       "Geographic distribution", 
-      tabName = 'geo_dis', 
+      tabName = 'geodis', 
       icon = shiny::icon('globe'),
       selected = FALSE
     )
@@ -29,19 +35,16 @@ sidebar = shinydashboard::dashboardSidebar(
 ### BODY
 body = shinydashboard::dashboardBody(
  
-  shinydashboard::box(
-    title = "",
-    width = 12,
-    
-    ## linha do título
-    fluidRow(
-      column(width = 12,
-             align = "center",
-             tags$h1("Title")
+  shinydashboard::tabItems(
+    shinydashboard::tabItem(
+      tabName = "geodis",
+      fluidRow(
+        column(width = 12,
+               align = "center",
+               tags$h1("Title")
+        )
       )
-      
     )
-    
   ),
   
   ### customing 
