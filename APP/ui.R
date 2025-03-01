@@ -1,11 +1,11 @@
 ## https://rstudio.github.io/shinydashboard/structure.html
+## https://github.com/tbradley1013/tree-subset-shiny build tree visualization
 
-
-date_update = "26/Feb/2024"
+last_updated = "26/Feb/2024"
 
 ### HEADER
 header = shinydashboard::dashboardHeader(
-  title = "LIPA dashboard",
+  title = HTML("<b>LIPA dashboard<b>"),
   disable = FALSE, 
   titleWidth  = 280
 )
@@ -17,35 +17,64 @@ sidebar = shinydashboard::dashboardSidebar(
   collapsed = FALSE,
   
   shinydashboard::sidebarMenu( 
-    
+    id = "tabs",
     shinydashboard::menuItem(
-      "Plant traits", 
-      tabName = 'traits', 
-      icon = shiny::icon('leaf'),
+      "Home", 
+      tabName = 'home', 
+      icon = shiny::icon('house'),
       selected = TRUE
     ),
     shinydashboard::menuItem(
+      "Phylogenetic relationships", 
+      tabName = 'phylogeny', 
+      icon = shiny::icon('diagram-project'),
+      selected = FALSE
+    ),
+    shinydashboard::menuItem(
+      "Functional traits", 
+      tabName = 'trait', 
+      icon = shiny::icon('leaf'),
+      selected = FALSE
+    ),
+    shinydashboard::menuItem(
       "Geographic distribution", 
-      tabName = 'geodis', 
+      tabName = 'geography', 
       icon = shiny::icon('globe'),
+      selected = FALSE
+    ),
+    shinydashboard::menuItem(
+      paste0("Last updated: ", "01/Mar/2025"),
+      tabName = 'update', 
+      icon = shiny::icon('calendar'),
       selected = FALSE
     )
   )
+  
 )
 ### BODY
 body = shinydashboard::dashboardBody(
- 
-  shinydashboard::tabItems(
-    shinydashboard::tabItem(
-      tabName = "geodis",
-      fluidRow(
-        column(width = 12,
-               align = "center",
-               tags$h1("Title")
-        )
-      )
-    )
-  ),
+  
+  shinydashboard::box( 
+      title = uiOutput("tab_title"), 
+      footer = NULL, 
+      status = NULL,
+      solidHeader = FALSE, 
+      background = NULL, 
+      width = 12, 
+      height = NULL,
+      collapsible = FALSE, 
+      collapsed = FALSE
+      ),
+  
+  # shinydashboard::tabItems(
+  #   shinydashboard::tabItem(
+  #     fluidRow(
+  #       column(width = 12,
+  #              align = "center"
+  #       )
+  #     )
+  #   )
+  # ),
   
   ### customing 
   tags$head(tags$style(HTML('
