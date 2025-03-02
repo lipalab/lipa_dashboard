@@ -1,7 +1,7 @@
 ## https://rstudio.github.io/shinydashboard/structure.html
 ## https://github.com/tbradley1013/tree-subset-shiny build tree visualization
 
-last_updated = "26/Feb/2024"
+if (!require("plotly")) install.packages("plotly"); library("plotly")
 
 ### HEADER
 header = shinydashboard::dashboardHeader(
@@ -54,28 +54,88 @@ sidebar = shinydashboard::dashboardSidebar(
 ### BODY
 body = shinydashboard::dashboardBody(
   
-  shinydashboard::box( 
-      title = uiOutput("tab_title"), 
-      footer = NULL, 
-      status = NULL,
-      solidHeader = FALSE, 
-      background = NULL, 
+  shinydashboard::tabItem(
+    tabName = '',
+    shinydashboard::box( 
+      title = "", 
       width = 12, 
       height = NULL,
-      collapsible = FALSE, 
-      collapsed = FALSE
+      
+      shinyjs::useShinyjs(), ## IMPORTANT: so shiny knows to use the shinyjs library
+      
+      ## title row
+      fluidRow(
+        column(
+          width = 12, 
+          align = "center",
+          uiOutput("tab_title")
+        )
       ),
-  
-  # shinydashboard::tabItems(
-  #   shinydashboard::tabItem(
-  #     fluidRow(
-  #       column(width = 12,
-  #              align = "center"
-  #       )
-  #     )
-  #   )
-  # ),
-  
+      
+      tags$hr(), tags$br(),
+      
+      fluidRow(
+        column(width = 3,
+               align = "left", 
+               selectInput(
+                 inputId = "phylogeny_dataset",
+                 label = "Select a phylogeny", 
+                 choices = c(
+                   "Rando 2025",
+                   "Vasconcelos 2020"
+                 ), 
+                 selected = NULL,  
+                 width = "100%",
+                 multiple = FALSE
+                )
+        ),
+        column(width = 3,
+               align = "left", 
+               selectInput(
+                 inputId = "phylogeny_layout",
+                 label = "Select a layout", 
+                 choices = c(
+                   'rectangular',
+                   'slanted',
+                   'fan',
+                   'circular',
+                   'radial',
+                   'unrooted'
+                 ), 
+                 selected = NULL,  
+                 width = "100%",
+                 multiple = FALSE
+               )
+        )
+      ),
+      ## plot 1 row
+      fluidRow(
+        column(
+          width = 12,
+          align = "center",
+          plotlyOutput(
+            "plot_1",  
+            height= '600px',
+            width = '900px'
+          )
+        )
+      ),
+      ## plot 2 row
+      fluidRow(
+        column(
+          width = 12,
+          align = "center",
+          plotlyOutput(
+            "plot_2",  
+            height= '600px', 
+            width = '900px'
+          )
+        )
+      )
+    )
+  ),
+
+
   ### customing 
   tags$head(tags$style(HTML('
                                 /* logo */
