@@ -1,9 +1,10 @@
-if (!require("ape")) install.packages("ape"); library("ape")
+if (!require("tidyverse")) install.packages("tidyverse"); require("tidyverse")
 if (!require("ggplot2")) install.packages("ggplot2"); library("ggplot2")
-if (!require("ggtree")) install.packages("ggtree"); library("ggtree")
 if (!require("plotly")) install.packages("plotly"); library("plotly")
+if (!require("ape")) install.packages("ape"); library("ape")
 if (!require("BiocManager")) install.packages("BiocManager")
 if (!require("ggtree")) BiocManager::install("ggtree"); library("ggtree")
+
 
 source("auxiliar.R")
 
@@ -22,13 +23,16 @@ list_trait_datasets =list.files(
 
 phylo_datasets = read.nexus(file = paste0("datasets/", list_phylo_datasets))
 
-trait_datasets = read.csv(file = paste0("datasets/", list_trait_datasets))
+trait_datasets = read.csv(file = paste0("datasets/", list_trait_datasets),
+                          na.strings = "na")
+
+
 
 #################################### SERVER ####################################
 
 server <- function(input, output, session) {
   
-  ### tab title - reactive
+  ### tab title
   observeEvent(input$tabs, {
     if(input$tabs == "home"){
       output$tab_title <-  renderUI({
@@ -51,65 +55,96 @@ server <- function(input, output, session) {
       })
     }
   })
-  
-  ### selection options for each tab
-  observeEvent(input$tabs, {
+  ### selection boxes 
+  observe({
+    if(input$tabs == "home"){
+      shinyjs::hide("selection_1")
+      shinyjs::hide("selection_2")
+      shinyjs::hide("selection_3")
+      shinyjs::hide("selection_4")
+    }
     if(input$tabs == "phylogeny"){
-      shinyjs::show("phylogeny_dataset")
-      shinyjs::show("phylogeny_layout")
-    } else {
-      shinyjs::hide("phylogeny_dataset")
-      shinyjs::hide("phylogeny_layout")
+      output$selection_1_label = renderText({"Select a phylogeny"})
+      output$selection_2_label = renderText({"Select a layout"})
+      output$selection_3_label = renderText({"Select a continous trait"})
+      output$selection_4_label = renderText({"Select a discrete trait"})
+      shinyjs::show("selection_1")
+      shinyjs::show("selection_2")
+      shinyjs::show("selection_3")
+      shinyjs::show("selection_4")
+    }
+    if(input$tabs == "trait"){
+      output$selection_1_label = renderText({"X axis trait"})
+      output$selection_2_label = renderText({"Y axis trait"})
+      output$selection_3_label = renderText({"Grouping variable"})
+      output$selection_4_label = renderText({"Apply a filter"})
+      shinyjs::show("selection_1")
+      shinyjs::show("selection_2")
+      shinyjs::hide("selection_3")
+      shinyjs::hide("selection_4")
+      
     }
   })
-
-  ### plot 1 
+  ### choices
   observe({
-    
-    if(input$tabs == "home"){
-      output$plot_1 = plotly::renderPlotly({
-        NULL
-      })
-    } 
     if(input$tabs == "phylogeny"){
-      
-      observe({
-        output$plot_1 = plotly::renderPlotly({
-          plot_phylo_tree(
+      updateSelectInput(
+        session, 
+        "selection_1",
+        choices = c("Rando 2025")
+      )
+      updateSelectInput(
+        session, 
+        "selection_2",
+        choices = c(
+          'rectangular',
+          'slanted',
+          'fan',
+          'circular',
+          'radial'
+        )
+      )
+    }
+    if(input$tabs == "trait"){
+      updateSelectInput(
+        session, 
+        "selection_1",
+        choices = c("bacteriod_type")
+      )
+      updateSelectInput(
+        session, 
+        "selection_2",
+        choices = c("bacteriod_type")
+      )
+    }
+  })
+  
+  ### plot phylogeny 
+  observe({
+    if(input$tabs == "phylogeny"){
+        output$plot_phylogeny = shiny::renderPlot({
+          plot_phylo(
             tr = phylo_datasets,
-            layout = input$phylogeny_layout
+            layout = input$selection_2
           )
         })
-      })
-    } 
-    if(input$tabs == "trait"){
-      output$plot_1 = plotly::renderPlotly({
-        NULL
-      })
-    } 
-    if(input$tabs == "geography"){
-      output$plot_1 = plotly::renderPlotly({
-        NULL
-      })
+    } else {
+      output$plot_phylogeny = shiny::renderPlot({NULL})
     }
   })
-  
-  ### plot 2
+  ### plot trait
   observe({
-    
-    if(input$tabs == "home"){
-      shinyjs::hide("plot_2")
-    } 
-    if(input$tabs == "phylogeny"){
-      shinyjs::hide("plot_2")
-    } 
     if(input$tabs == "trait"){
-      output$plot_2 = plotly::renderPlotly({
-        NULL
+      output$plot_trait = plotly::renderPlotly({
+        plot_trait(
+          df = trait_datasets,
+          x_axis = input$selection_1,
+          y_axis = input$selection_2,
+          group = input$selection_3
+        )
       })
-    } 
-    if(input$tabs == "geography"){
-      shinyjs::hide("plot_2")
+    } else {
+      output$plot_trait = plotly::renderPlotly({NULL})
     }
   })
   

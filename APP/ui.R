@@ -5,8 +5,7 @@ if (!require("plotly")) install.packages("plotly"); library("plotly")
 
 ### HEADER
 header = shinydashboard::dashboardHeader(
-  title = HTML("<b>LIPA dashboard<b>"),
-  disable = FALSE, 
+  title = "LIPA dashboard",
   titleWidth  = 280
 )
 
@@ -78,13 +77,9 @@ body = shinydashboard::dashboardBody(
         column(width = 3,
                align = "left", 
                selectInput(
-                 inputId = "phylogeny_dataset",
-                 label = "Select a phylogeny", 
-                 choices = c(
-                   "Rando 2025",
-                   "Vasconcelos 2020"
-                 ), 
-                 selected = NULL,  
+                 inputId = "selection_1",
+                 label = textOutput("selection_1_label"), 
+                 choices =  c(), 
                  width = "100%",
                  multiple = FALSE
                 )
@@ -92,35 +87,47 @@ body = shinydashboard::dashboardBody(
         column(width = 3,
                align = "left", 
                selectInput(
-                 inputId = "phylogeny_layout",
-                 label = "Select a layout", 
-                 choices = c(
-                   'rectangular',
-                   'slanted',
-                   'fan',
-                   'circular',
-                   'radial',
-                   'unrooted'
-                 ), 
-                 selected = NULL,  
+                 inputId = "selection_2",
+                 label = textOutput("selection_2_label"), 
+                 choices = c(), 
+                 width = "100%",
+                 multiple = FALSE
+               )
+        ),
+        column(width = 3,
+               align = "left", 
+               selectInput(
+                 inputId = "selection_3",
+                 label = textOutput("selection_3_label"), 
+                 choices = c(), 
+                 width = "100%",
+                 multiple = FALSE
+               )
+        ),
+        column(width = 3,
+               align = "left", 
+               selectInput(
+                 inputId = "selection_4",
+                 label = textOutput("selection_4_label"), 
+                 choices =  c(), 
                  width = "100%",
                  multiple = FALSE
                )
         )
       ),
-      ## plot 1 row
+      ## plot phylogeny row
       fluidRow(
         column(
           width = 12,
           align = "center",
-          plotlyOutput(
-            "plot_1",  
+          plotOutput(
+            "plot_phylogeny",  
             height= '600px',
             width = '900px'
           )
         )
       ),
-      ## plot 2 row
+      ## plot 1 row
       fluidRow(
         column(
           width = 12,
@@ -175,15 +182,7 @@ body = shinydashboard::dashboardBody(
                                 .content-wrapper{
                                 background-color: #222d32;
                                 }
-                                
-                                /* header 1 */
-                                .h1, h1 { 
-                                font-size: 4em;
-                                font-weight: bold;
-                                color: black;
-                                background-color: white;
-                                }
-                                
+                               
                                 /* navigation tabs */
                                 .nav-tabs-custom>.tab-content {
                                 background: #F3F9FD;
@@ -197,6 +196,14 @@ body = shinydashboard::dashboardBody(
                                 font-weight: bold;
                                 color: black;
                                 background-color: white;
+                                }
+                            
+                                /* header 2 */
+                                .h2, h2 { 
+                                font-size: 1em;
+                                font-weight: bold;
+                                color: black;
+                                background-color: transparent;
                                 }
                             
                             ')
