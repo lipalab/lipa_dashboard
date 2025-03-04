@@ -1,36 +1,66 @@
 if (!require("tidyverse")) install.packages("tidyverse"); require("tidyverse")
+if (!require("data.table")) install.packages("data.table"); require("data.table")
 if (!require("ggplot2")) install.packages("ggplot2"); library("ggplot2")
 if (!require("plotly")) install.packages("plotly"); library("plotly")
 if (!require("ape")) install.packages("ape"); library("ape")
 if (!require("BiocManager")) install.packages("BiocManager")
 if (!require("ggtree")) BiocManager::install("ggtree"); library("ggtree")
 
-
 source("auxiliar.R")
 
 ############################### LOADING DATASETS ###############################
 
-list_phylo_datasets = list.files(
+### phylogeny datasets names
+phylo_ds_files = list.files(
   path = "datasets",
   pattern ="phylo"
 )
 
-list_trait_datasets =list.files(
+### trait datasets names
+trait_ds_files =list.files(
   path = "datasets",
   pattern ="trait"
 )
 
+### read datasets into lists
+phylo_ds = lapply( paste0("datasets/", phylo_ds_files), read.nexus)
+trait_ds = lapply( paste0("datasets/", trait_ds_files), read.csv)
 
-phylo_datasets = read.nexus(file = paste0("datasets/", list_phylo_datasets))
-
-trait_datasets = read.csv(file = paste0("datasets/", list_trait_datasets),
-                          na.strings = "na")
-
-
+### naming datasets
+phylo_ds_names = gsub(pattern = "phylo_|.tree", "", phylo_ds_files)
+names(phylo_ds) = phylo_ds_names
+trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
+names(trait_ds) = trait_ds_names 
 
 #################################### SERVER ####################################
 
 server <- function(input, output, session) {
+  
+  ### rective datasets
+  ## phylogenetic tree
+  phylo_tr = reactive({
+    
+    tr = phylo_ds[["JR2025"]]
+    
+    return(tr)
+    
+  })
+  ## trait dataframe
+  trait_df = reactive({
+    
+    trait_filt = trait_ds
+    ### filtering functions
+    df = rbindlist(trait_filt, fill = T)
+    return(df)
+    
+  })
+  ## trait names
+  trait_names = reactive({
+    tn = colnames(trait_df()) 
+    tn = tn[!grepl("key|data_source|species_reported|experiment_", tn)]
+    tn = sort(tn)
+    return(tn)
+  })
   
   ### tab title
   observeEvent(input$tabs, {
@@ -55,7 +85,7 @@ server <- function(input, output, session) {
       })
     }
   })
-  ### selection boxes 
+  ### selection titles 
   observe({
     if(input$tabs == "home"){
       shinyjs::hide("selection_1")
@@ -85,13 +115,13 @@ server <- function(input, output, session) {
       
     }
   })
-  ### choices
+  ### selection choices
   observe({
     if(input$tabs == "phylogeny"){
       updateSelectInput(
         session, 
         "selection_1",
-        choices = c("Rando 2025")
+        choices = phylo_ds_names
       )
       updateSelectInput(
         session, 
@@ -109,22 +139,33 @@ server <- function(input, output, session) {
       updateSelectInput(
         session, 
         "selection_1",
-        choices = c("bacteriod_type")
+        choices = trait_names()
       )
       updateSelectInput(
         session, 
         "selection_2",
-        choices = c("bacteriod_type")
+        choices = c("None", trait_names())
       )
     }
   })
-  
+  ### plot to display
+  observe({
+    if(input$tabs == "phylogeny"){
+      shinyjs::show("plot_phylogeny")
+      shinyjs::hide("plot_trait")
+    }
+    if(input$tabs == "trait"){
+      shinyjs::hide("plot_phylogeny")
+      shinyjs::show("plot_trait")
+    }
+    })
+    
   ### plot phylogeny 
   observe({
     if(input$tabs == "phylogeny"){
         output$plot_phylogeny = shiny::renderPlot({
-          plot_phylo(
-            tr = phylo_datasets,
+          plot_phylo_fx(
+            tr = phylo_tr(),
             layout = input$selection_2
           )
         })
@@ -136,8 +177,8 @@ server <- function(input, output, session) {
   observe({
     if(input$tabs == "trait"){
       output$plot_trait = plotly::renderPlotly({
-        plot_trait(
-          df = trait_datasets,
+        plot_trait_fx(
+          df = trait_df(),
           x_axis = input$selection_1,
           y_axis = input$selection_2,
           group = input$selection_3

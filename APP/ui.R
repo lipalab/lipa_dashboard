@@ -133,7 +133,7 @@ body = shinydashboard::dashboardBody(
           width = 12,
           align = "center",
           plotlyOutput(
-            "plot_2",  
+            "plot_trait",  
             height= '600px', 
             width = '900px'
           )
