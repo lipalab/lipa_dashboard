@@ -94,14 +94,14 @@ server <- function(input, output, session) {
       shinyjs::hide("selection_4")
     }
     if(input$tabs == "phylogeny"){
-      output$selection_1_label = renderText({"Select a phylogeny"})
-      output$selection_2_label = renderText({"Select a layout"})
-      output$selection_3_label = renderText({"Select a continous trait"})
-      output$selection_4_label = renderText({"Select a discrete trait"})
+      output$selection_1_label = renderText({"Select a first trait"})
+      output$selection_2_label = renderText({"Select a second trait"})
+      output$selection_3_label = renderText({NULL})
+      output$selection_4_label = renderText({NULL})
       shinyjs::show("selection_1")
       shinyjs::show("selection_2")
-      shinyjs::show("selection_3")
-      shinyjs::show("selection_4")
+      shinyjs::hide("selection_3")
+      shinyjs::hide("selection_4")
     }
     if(input$tabs == "trait"){
       output$selection_1_label = renderText({"X axis trait"})
@@ -121,18 +121,12 @@ server <- function(input, output, session) {
       updateSelectInput(
         session, 
         "selection_1",
-        choices = phylo_ds_names
+        choices = c("None", trait_names())
       )
       updateSelectInput(
         session, 
         "selection_2",
-        choices = c(
-          'rectangular',
-          'slanted',
-          'fan',
-          'circular',
-          'radial'
-        )
+        choices = c("None", trait_names())
       )
     }
     if(input$tabs == "trait"){
@@ -163,14 +157,16 @@ server <- function(input, output, session) {
   ### plot phylogeny 
   observe({
     if(input$tabs == "phylogeny"){
-        output$plot_phylogeny = shiny::renderPlot({
+        output$plot_phylogeny = plotly::renderPlotly({
           plot_phylo_fx(
             tr = phylo_tr(),
-            layout = input$selection_2
+            df = trait_df(),
+            trait1 = input$selection_1,
+            trait2 = input$selection_2
           )
         })
     } else {
-      output$plot_phylogeny = shiny::renderPlot({NULL})
+      output$plot_phylogeny = plotly::renderPlotly({NULL})
     }
   })
   ### plot trait

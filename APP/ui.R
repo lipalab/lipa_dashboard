@@ -115,19 +115,19 @@ body = shinydashboard::dashboardBody(
                )
         )
       ),
-      ## plot phylogeny row
+      ## plot phylogeny 
       fluidRow(
         column(
           width = 12,
           align = "center",
-          plotOutput(
+          plotlyOutput(
             "plot_phylogeny",  
             height= '600px',
-            width = '900px'
+            width = '950px'
           )
         )
       ),
-      ## plot 1 row
+      ## plot trait
       fluidRow(
         column(
           width = 12,

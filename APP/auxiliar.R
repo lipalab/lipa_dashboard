@@ -1,23 +1,117 @@
 
 ### plot phylogenetic tree
-plot_phylo_fx = function(tr, layout){
-  ## number of tips
-  ntip= Ntip(tr)
-  ## font size based on number of tips
-  font_size = (1.5 * 300)/ntip
-  ## plot phylogeny
-  plot_phylo = ggtree::ggtree(
-    tr = tr,
-    ladderize = TRUE,
-    layout = layout
-  ) +
-  ggtree::geom_tiplab(
-    size = font_size
+plot_phylo_fx = function(tr, df, trait1, trait2){
+  
+  ## plot base phylogeny
+  phy1 = ggtree::ggtree(
+      tr = tr,
+      ladderize = TRUE
+  ) 
+  ## tip data
+  phy_data = phy1$data %>% 
+    rename(species = label,
+           time = x,
+           order = y)
+  ## taxonomy
+  split_names = strsplit(split = "_", phy_data$species)
+  taxon = sapply(split_names,"[[",1)
+  phy_data$taxon = taxon
+  ## point size based on number of tips
+  point_size = (0.5 * 300)/Ntip(tr)
+  ## parameters to display
+  tooltip = c("time","species")
+  ## taxon colors
+  taxon_colors = c(
+    "Batesia" = "darkgreen",
+    "Cassia" = "darkred",
+    "Chamaecrista" = "gold",
+    "Melanoxylon" = "darkgoldenrod",
+    "Recordoxylon" = "darkblue",
+    "Senna" = "lightpink",
+    "Vouacapoua" = "lightgreen"
   )
-  ## return
+  
+    ## add taxonomy
+    phy2 = phy1 +
+      geom_point(data = phy_data,
+                 aes(
+                   label = species,
+                   x = time,
+                   y = order,
+                   colour = taxon
+                 ),
+                 shape = 21,
+                 size = point_size
+      )+ scale_color_manual(values = taxon_colors)
+  
+  if(trait1 != "None" & trait2 == "None") {
+    ## processing df 
+    df1 = df %>% 
+      rename(species = species_reported) %>% 
+      select_at(c("species",trait1) )
+    ### trait data
+    data1 = phy_data[1:Ntip(tr),]
+    data1 = data1 %>% 
+      left_join(df1, by = "species")
+    ## add first trait
+    phy2 = phy1 +
+      geom_point(data = data1,
+                 aes(
+                   label = species,
+                   x = max(time)+0.2,
+                   y = order,
+                   colour = get(trait1)
+                 ),
+                 shape = 22,
+                 size = point_size*1.1
+                 )
+    ## update tooltip
+    tooltip = c("species", "get(trait1)")
+  }
+  ## check second trait
+  if(trait1 != "None" & trait2 != "None"){
+    ## rename species column 
+    df1 = df %>% 
+      rename(species = species_reported) %>% 
+      select_at(c("species",trait1, trait2) )
+    ### join
+    data2 = phy_data[1:Ntip(tr),]
+    data2 = data2 %>% 
+      left_join(df1, by = "species")
+    ## add second trait  
+    phy2 = phy1 +
+      
+      geom_point(data = data2,
+                 aes(
+                   label = species,
+                   x = max(time)+0.2,
+                   y = order,
+                   colour = get(trait1)
+                 ),
+                 shape = 22,
+                 size = point_size*1.1
+      ) +
+      geom_point(data = data2,
+                 aes(
+                   label = species,
+                   x = max(time)+0.4,
+                   y = order,
+                   colour = get(trait2)
+                 ),
+                 shape = 22,
+                 size = point_size*1.1
+      ) 
+    ## update tooltip
+    tooltip = c("species", "get(trait1)","get(trait2)")
+  }
+  
+  ### convert to plotly
+  plot_phylo = plotly::ggplotly(phy2, tooltip = tooltip)
+  ### return
   return(plot_phylo)
 }
 
+### plot traits
 plot_trait_fx = function(df, x_axis, y_axis, group){
   ## x axis
   x_axis_class = class(df[[x_axis]])
