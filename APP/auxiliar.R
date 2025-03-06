@@ -16,6 +16,8 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
   split_names = strsplit(split = "_", phy_data$species)
   taxon = sapply(split_names,"[[",1)
   phy_data$taxon = taxon
+  ## min value for X axis
+  xmin = max(phy_data$time) + 0.8
   ## point size based on number of tips
   point_size = (0.5 * 300)/Ntip(tr)
   ## parameters to display
@@ -30,21 +32,20 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
     "Senna" = "lightpink",
     "Vouacapoua" = "lightgreen"
   )
+  ## defatul phylo plot
+  phy2 = phy1 +
+    geom_point(data = phy_data,
+               aes(
+                 label = species,
+                 x = time,
+                 y = order,
+                 colour = taxon
+               ),
+               shape = 21,
+               size = point_size
+    )+ scale_color_manual(values = taxon_colors)
   
-    ## add taxonomy
-    phy2 = phy1 +
-      geom_point(data = phy_data,
-                 aes(
-                   label = species,
-                   x = time,
-                   y = order,
-                   colour = taxon
-                 ),
-                 shape = 21,
-                 size = point_size
-      )+ scale_color_manual(values = taxon_colors)
-  
-  if(trait1 != "None" & trait2 == "None") {
+  if(trait1 != "None") {
     ## processing df 
     df1 = df %>% 
       rename(species = species_reported) %>% 
@@ -58,7 +59,7 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
       geom_point(data = data1,
                  aes(
                    label = species,
-                   x = max(time)+0.2,
+                   x = xmin+0.1,
                    y = order,
                    colour = get(trait1)
                  ),
@@ -69,40 +70,47 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
     tooltip = c("species", "get(trait1)")
   }
   ## check second trait
-  if(trait1 != "None" & trait2 != "None"){
-    ## rename species column 
+  if(trait2 != "None"){
+    ## make symbolic
+    trait2 = sym(trait2)
+    ## mean trait value per species 
     df1 = df %>% 
       rename(species = species_reported) %>% 
-      select_at(c("species",trait1, trait2) )
-    ### join
+      group_by(species) %>% 
+      reframe(trait2 = mean(!!trait2, na.rm = T)) 
+    ## join species with trait values
     data2 = phy_data[1:Ntip(tr),]
     data2 = data2 %>% 
-      left_join(df1, by = "species")
-    ## add second trait  
-    phy2 = phy1 +
-      
-      geom_point(data = data2,
-                 aes(
-                   label = species,
-                   x = max(time)+0.2,
-                   y = order,
-                   colour = get(trait1)
-                 ),
-                 shape = 22,
-                 size = point_size*1.1
-      ) +
-      geom_point(data = data2,
-                 aes(
-                   label = species,
-                   x = max(time)+0.4,
-                   y = order,
-                   colour = get(trait2)
-                 ),
-                 shape = 22,
-                 size = point_size*1.1
-      ) 
+      select("species", "order") %>% 
+      left_join(df1, by ="species") %>% 
+      mutate(X = xmin + 0.8) %>% 
+      rename(Y = order)
+    
+    ## add to previous tree 
+    if(trait1 != "None"){
+      phy2 = phy2 +
+        geom_tile(data = data2,
+                  aes(
+                    label = species,
+                    x = X,
+                    y = Y,
+                    fill = trait2
+                  )
+        ) 
+    } else {
+      phy2 = phy1 +
+        geom_tile(data = data2,
+                  aes(
+                    label = species,
+                    x = X,
+                    y = Y,
+                    fill = trait2
+                  )
+        ) 
+    }
+    
     ## update tooltip
-    tooltip = c("species", "get(trait1)","get(trait2)")
+    tooltip = c("species","get(trait1)", "trait2")
   }
   
   ### convert to plotly
