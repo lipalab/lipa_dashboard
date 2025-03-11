@@ -1,8 +1,21 @@
-## https://rstudio.github.io/shinydashboard/structure.html
-## https://github.com/tbradley1013/tree-subset-shiny build tree visualization
-
+### LIBRARIES
 if (!require("plotly")) install.packages("plotly"); library("plotly")
 if (!require("leaflet")) install.packages("leaflet"); library("leaflet")
+
+### phylogeny datasets names
+phylo_ds_files = list.files(
+  path = "datasets",
+  pattern ="phylo"
+)
+phylo_ds_names = gsub(pattern = "phylo_|.tree", "", phylo_ds_files)
+
+### trait datasets names
+trait_ds_files =list.files(
+  path = "datasets",
+  pattern ="trait"
+)
+trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
+ 
 
 ### HEADER
 header = shinydashboard::dashboardHeader(
@@ -18,6 +31,7 @@ sidebar = shinydashboard::dashboardSidebar(
   
   shinydashboard::sidebarMenu( 
     id = "tabs",
+    
     shinydashboard::menuItem(
       "Home", 
       tabName = 'home', 
@@ -42,11 +56,47 @@ sidebar = shinydashboard::dashboardSidebar(
       icon = shiny::icon('globe'),
       selected = FALSE
     ),
+    
+    tags$hr(),
+    
     shinydashboard::menuItem(
-      paste0("Last updated: ", "11/Mar/2025"),
-      tabName = '', 
-      icon = shiny::icon('calendar'),
-      selected = FALSE
+      "Select datasets",
+      tabName = 'select_ds',
+      icon = shiny::icon('database'),
+      selected = FALSE,
+      
+      selectInput(
+        inputId = "select_phylo_ds",
+        label = "Phylogenetic tree",
+        choices = phylo_ds_names,
+        selected = "JR2025",
+        multiple = FALSE,
+        width = "100%"
+      ),
+      shinyWidgets::pickerInput(
+        inputId = "select_trait_ds",
+        label = "Trait datasets",
+        choices = trait_ds_names,
+        selected = trait_ds_names,
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 2"
+        )
+      ),
+      shinyWidgets::pickerInput(
+        inputId = "select_geo_ds",
+        label = "Geographic datasets",
+        choices = c(),
+        selected = c(),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 2"
+        )
+      )
     )
   )
   

@@ -42,21 +42,19 @@ server <- function(input, output, session) {
   ### rective datasets
   ## phylogenetic tree
   phylo_tr = reactive({
-    
-    tr = phylo_ds[["JR2025"]]
-    
+    ## select phylogenetic tree
+    tr = phylo_ds[[input$select_phylo_ds]]
     return(tr)
-    
   })
   ## trait dataframe
   trait_df = reactive({
-    
-    trait_filt = trait_ds
-    ### filtering functions
-    df = rbindlist(trait_filt, fill = T)
-    return(df)
-    
+    ## select trait datasets
+    tdl = trait_ds[input$select_trait_ds]
+    ## bind to dataframe
+    tdf = rbindlist(tdl, fill = T)
+    return(tdf)
   })
+  ### reactive elements
   ## trait names
   trait_names = reactive({
     tn = colnames(trait_df()) 
@@ -77,7 +75,7 @@ server <- function(input, output, session) {
     ntn = colnames(trait_df())[tc %in% c("integer", "numerical")]
     return(ntn)
   })
-  ### tab title
+  ## tab title
   observe({
     if(input$tabs == "home"){
       output$tab_title <-  renderUI({
@@ -100,7 +98,7 @@ server <- function(input, output, session) {
       })
     }
   })
-  ### selection labels
+  ## selection labels
   observe({
     if(input$tabs == "home"){
       shinyjs::hide("selection_1")
@@ -136,7 +134,7 @@ server <- function(input, output, session) {
       shinyjs::hide("selection_4")
     }
   })
-  ### selection choices
+  ## selection choices
   observe({
     if(input$tabs == "phylogeny"){
       updateSelectInput(
@@ -163,7 +161,7 @@ server <- function(input, output, session) {
       )
     }
   })
-  ### plot to display
+  ## plot to display
   observe({
     if(input$tabs == "phylogeny"){
       shinyjs::show("plot_phylogeny")
@@ -182,7 +180,7 @@ server <- function(input, output, session) {
     }
     })
     
-  ### plot phylogeny 
+  ## plot phylogeny 
   observe({
     if(input$tabs == "phylogeny"){
         output$plot_phylogeny = plotly::renderPlotly({
@@ -197,7 +195,7 @@ server <- function(input, output, session) {
       output$plot_phylogeny = plotly::renderPlotly({NULL})
     }
   })
-  ### plot trait
+  ## plot trait
   observe({
     if(input$tabs == "trait"){
       output$plot_trait = plotly::renderPlotly({
@@ -212,7 +210,7 @@ server <- function(input, output, session) {
       output$plot_trait = plotly::renderPlotly({NULL})
     }
   })
-  ### plot geography
+  ## plot geography
   observe({
     if(input$tabs == "geography"){
       output$plot_geography = leaflet::renderLeaflet({
