@@ -2,6 +2,9 @@ if (!require("tidyverse")) install.packages("tidyverse"); require("tidyverse")
 if (!require("data.table")) install.packages("data.table"); require("data.table")
 if (!require("ggplot2")) install.packages("ggplot2"); library("ggplot2")
 if (!require("plotly")) install.packages("plotly"); library("plotly")
+if (!require("leaflet")) install.packages("leaflet"); library("leaflet")
+if (!require("leaflet.minicharts")) install.packages("leaflet.minicharts"); library("leaflet.minicharts")
+if (!require("leaflegend")) install.packages("leaflegend"); library("leaflegend")
 if (!require("ape")) install.packages("ape"); library("ape")
 if (!require("BiocManager")) install.packages("BiocManager")
 if (!require("ggtree")) BiocManager::install("ggtree"); library("ggtree")
@@ -75,7 +78,7 @@ server <- function(input, output, session) {
     return(ntn)
   })
   ### tab title
-  observeEvent(input$tabs, {
+  observe({
     if(input$tabs == "home"){
       output$tab_title <-  renderUI({
         HTML("<h1>Welcome to the LIPA dashboard<h1>")
@@ -97,7 +100,7 @@ server <- function(input, output, session) {
       })
     }
   })
-  ### selection titles 
+  ### selection labels
   observe({
     if(input$tabs == "home"){
       shinyjs::hide("selection_1")
@@ -116,8 +119,8 @@ server <- function(input, output, session) {
       shinyjs::hide("selection_4")
     }
     if(input$tabs == "trait"){
-      output$selection_1_label = renderText({"X axis trait"})
-      output$selection_2_label = renderText({"Y axis trait"})
+      output$selection_1_label = renderText({"X-axis trait"})
+      output$selection_2_label = renderText({"Y-axis trait"})
       output$selection_3_label = renderText({"Grouping variable"})
       output$selection_4_label = renderText({"Apply a filter"})
       shinyjs::show("selection_1")
@@ -125,6 +128,12 @@ server <- function(input, output, session) {
       shinyjs::hide("selection_3")
       shinyjs::hide("selection_4")
       
+    }
+    if(input$tabs == "geography"){
+      shinyjs::hide("selection_1")
+      shinyjs::hide("selection_2")
+      shinyjs::hide("selection_3")
+      shinyjs::hide("selection_4")
     }
   })
   ### selection choices
@@ -159,10 +168,17 @@ server <- function(input, output, session) {
     if(input$tabs == "phylogeny"){
       shinyjs::show("plot_phylogeny")
       shinyjs::hide("plot_trait")
+      shinyjs::hide("plot_geography")
     }
     if(input$tabs == "trait"){
       shinyjs::hide("plot_phylogeny")
       shinyjs::show("plot_trait")
+      shinyjs::hide("plot_geography")
+    }
+    if(input$tabs == "geography"){
+      shinyjs::hide("plot_phylogeny")
+      shinyjs::hide("plot_trait")
+      shinyjs::show("plot_geography")
     }
     })
     
@@ -196,6 +212,16 @@ server <- function(input, output, session) {
       output$plot_trait = plotly::renderPlotly({NULL})
     }
   })
-  
+  ### plot geography
+  observe({
+    if(input$tabs == "geography"){
+      output$plot_geography = leaflet::renderLeaflet({
+        plot_geo_fx()
+      })
+    } else {
+      output$plot_geography = leaflet::renderLeaflet({NULL})
+    }
+    
+  })
   
 } # server closer

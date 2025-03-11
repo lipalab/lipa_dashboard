@@ -119,17 +119,17 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
   return(plot_phylo)
 }
 
-### plot traits
+### plot trait data
 plot_trait_fx = function(df, x_axis, y_axis, group){
   
-  ## x axis
+  ### x axis
   x_axis_class = class(df[[x_axis]])
   x_axis_title = gsub(pattern ="_",
                       replacement = " ",
                       x_axis
                       )
-  ## y axis
-  y_axis_class = "None"
+  ### y axis
+  y_axis_class = "no class"
   if(y_axis != "None"){
       y_axis_class = class(df[[y_axis]])
       y_axis_title = gsub(pattern ="_",
@@ -138,33 +138,34 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
     )
   }
   
-  ### BAR PLOT FOR SINGLE CATEGORICAL X AXIS
+  ### BAR PLOT FOR CATEGORICAL X AXIS
   if(x_axis_class %in% c("character","logical") &
      y_axis == "None"){
+    
     ## processing df
-    df_proc = df %>% 
+    df = df %>% 
       group_by_at(x_axis) %>% 
       reframe(n = n())
     
     ## plotting
     plot_trait = plot_ly() %>% 
-      add_trace(x = df_proc[[x_axis]], 
-                y = df_proc[["n"]],
+      add_trace(x = df[[x_axis]], 
+                y = df[["n"]],
                 type = "bar",  
                 orientation = 'v',
                 opacity = 0.75,
                 hoverinfo = 'text',
                 textposition = 'none',
-                text = paste('</br>',df_proc[[x_axis]],
-                             '</br> n: ',df_proc[["n"]]
+                text = paste('</br>',df[[x_axis]],
+                             '</br> n: ',df[["n"]]
                 ) 
       ) %>%
       layout(bargap = 0.1, 
              barmode = 'stack',
              xaxis = list(title = list(text = x_axis_title,
                                        font = list(size = 14)),
-                          tickvals = df_proc[[x_axis]],
-                          ticktext = df_proc[[x_axis]],
+                          tickvals = df[[x_axis]],
+                          ticktext = df[[x_axis]],
                           zeroline = FALSE, 
                           mirror = FALSE,
                           showline = FALSE, 
@@ -193,15 +194,13 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
       )
     
   }
-  ### BAR PLOT FOR SINGLE NUMERICAL X AXIS
+  ### HISTOGRAM FOR NUMERICAL X AXIS
   if(x_axis_class %in% c("integer","numerical") & 
      y_axis == "None"){
-    ## processing df
-    df_proc = df 
-    
+   
     ## plotting
     plot_trait = plot_ly() %>% 
-      add_trace(x = df_proc[[x_axis]], 
+      add_trace(x = df[[x_axis]], 
                 type = "histogram", 
                 opacity = 0.75
                 
@@ -238,18 +237,16 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
       )
     
   }
-  ### BOX PLOT NORMAL
+  ### BOX PLOT VERTICAL
   if(x_axis_class %in% c("character","logical") & 
      y_axis_class %in% c("integer","numerical")){
-    ## processing df
-    df_proc = df 
     
     ## plotting
     plot_trait = plot_ly() %>% 
                
       add_trace(
-                x = df_proc[[x_axis]], 
-                y = df_proc[[y_axis]], 
+                x = df[[x_axis]], 
+                y = df[[y_axis]], 
                 type = "box", 
                 opacity = 0.75
                 ) %>%
@@ -284,22 +281,63 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
       )
     
   }
-  ### SCATTER PLOT 
+  ### BOX PLOT HORIZONTAL
   if(x_axis_class %in% c("integer","numerical") & 
-     y_axis_class %in% c("integer","numerical")){
-    ## processing df
-    df_proc = df 
+     y_axis_class %in% c("character","logical")){
     
     ## plotting
     plot_trait = plot_ly() %>% 
-      add_trace(x = df_proc[[x_axis]], 
-                y = df_proc[[y_axis]], 
+      
+      add_trace(
+        x = df[[x_axis]], 
+        y = df[[y_axis]], 
+        type = "box", 
+        opacity = 0.75
+      ) %>%
+      layout(
+        xaxis = list(title = list(text = x_axis_title,
+                                  font = list(size = 14)),
+                     zeroline = FALSE, 
+                     mirror = FALSE,
+                     showline = FALSE, 
+                     linewidth = 1, 
+                     linecolor = 'black',
+                     showgrid = FALSE
+        ),
+        yaxis = list(title = list(text = y_axis_title, 
+                                  font = list(size = 14)),
+                     zeroline = FALSE, 
+                     mirror = FALSE,
+                     showline = FALSE, 
+                     linewidth = 1, 
+                     linecolor = 'black',
+                     showgrid = FALSE
+        ), 
+        
+        legend = list(orientation = 'h', 
+                      xanchor = "center",
+                      x = 0.5,
+                      y = -0.15,
+                      font = list(size = 12)
+                      
+        )
+        
+      )
+  }
+  ### SCATTER PLOT 
+  if(x_axis_class %in% c("integer","numerical") & 
+     y_axis_class %in% c("integer","numerical")){
+    
+    ## plotting
+    plot_trait = plot_ly() %>% 
+      add_trace(x = df[[x_axis]], 
+                y = df[[y_axis]], 
                 type = "scatter", 
                 opacity = 0.75,
                 hoverinfo = 'text',
                 textposition = 'none',
-                text = paste('</br> x: ',df_proc[[x_axis]],
-                             '</br> y: ',df_proc[[y_axis]]
+                text = paste('</br> x: ',df[[x_axis]],
+                             '</br> y: ',df[[y_axis]]
                 ) 
                 
       ) %>%
@@ -335,8 +373,75 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
       )
     
   }
-  
+  ### HEATMAP
+  if(x_axis_class %in% c("character","logical") & 
+     y_axis_class %in% c("character","logical")){
+    
+    ## processing data
+    df = df %>% 
+      group_by_at(c(x_axis, y_axis)) %>% 
+      reframe(n = n())
+    
+    ## plotting
+    plot_trait = plot_ly() %>% 
+      add_trace(x = df[[x_axis]], 
+                y = df[[y_axis]],
+                z = df[["n"]],
+                type = "heatmap", 
+                opacity = 0.75,
+                hoverinfo = 'text',
+                text = paste('</br>',df[[x_axis]],
+                             '</br>',df[[y_axis]],
+                             '</br> n: ',df[["n"]]
+                ) 
+                
+      ) %>%
+      layout(bargap = 0.1, 
+             barmode = 'stack',
+             xaxis = list(title = list(text = x_axis_title,
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ),
+             yaxis = list(title = list(text = y_axis_title, 
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ), 
+             
+             legend = list(orientation = 'h', 
+                           xanchor = "center",
+                           x = 0.5,
+                           y = -0.15,
+                           font = list(size = 12)
+                           
+             )
+             
+      )
+      
+  }
   ### return
   return(plot_trait)
   
+}
+
+### plot geographic data
+plot_geo_fx = function(){
+  
+  ### base map
+  plot_map = leaflet() %>%
+    addProviderTiles(providers$OpenTopoMap) %>%  
+    setView(lng = -46.565744, lat =-23.677659, zoom= 2) 
+  
+  ### return
+  return(plot_map)
+    
 }

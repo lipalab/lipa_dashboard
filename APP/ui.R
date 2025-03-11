@@ -2,6 +2,7 @@
 ## https://github.com/tbradley1013/tree-subset-shiny build tree visualization
 
 if (!require("plotly")) install.packages("plotly"); library("plotly")
+if (!require("leaflet")) install.packages("leaflet"); library("leaflet")
 
 ### HEADER
 header = shinydashboard::dashboardHeader(
@@ -42,8 +43,8 @@ sidebar = shinydashboard::dashboardSidebar(
       selected = FALSE
     ),
     shinydashboard::menuItem(
-      paste0("Last updated: ", "01/Mar/2025"),
-      tabName = 'update', 
+      paste0("Last updated: ", "11/Mar/2025"),
+      tabName = '', 
       icon = shiny::icon('calendar'),
       selected = FALSE
     )
@@ -120,7 +121,7 @@ body = shinydashboard::dashboardBody(
         column(
           width = 12,
           align = "center",
-          plotlyOutput(
+          plotly::plotlyOutput(
             "plot_phylogeny",  
             height= '600px',
             width = '950px'
@@ -132,8 +133,20 @@ body = shinydashboard::dashboardBody(
         column(
           width = 12,
           align = "center",
-          plotlyOutput(
+          plotly::plotlyOutput(
             "plot_trait",  
+            height= '600px', 
+            width = '900px'
+          )
+        )
+      ),
+      ## plot geogrpahy
+      fluidRow(
+        column(
+          width = 12,
+          align = "center",
+          leaflet::leafletOutput(
+            "plot_geography",  
             height= '600px', 
             width = '900px'
           )
