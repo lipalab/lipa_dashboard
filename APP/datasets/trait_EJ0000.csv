@@ -1,4 +1,4 @@
-key,data_source,species_reported,nodule_presence,bacteroid_type,nodule_reference
+key,data_source,species_reported,nodule_presence,bacteroid_type,reference
 EJ0000_000001,literature,Chamaecrista_absus,TRUE,SYM,Naisbitt_1992
 EJ0000_000002,literature,Chamaecrista_adiantifolia,TRUE,FT,de_Faria_2022
 EJ0000_000003,literature,Chamaecrista_apoucouita,TRUE,NA,Pons_2007

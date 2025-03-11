@@ -121,6 +121,7 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
 
 ### plot traits
 plot_trait_fx = function(df, x_axis, y_axis, group){
+  
   ## x axis
   x_axis_class = class(df[[x_axis]])
   x_axis_title = gsub(pattern ="_",
@@ -128,6 +129,7 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
                       x_axis
                       )
   ## y axis
+  y_axis_class = "None"
   if(y_axis != "None"){
       y_axis_class = class(df[[y_axis]])
       y_axis_title = gsub(pattern ="_",
@@ -135,9 +137,10 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
                           y_axis
     )
   }
-
-  ### SINGLE BAR PLOT FOR CATEGORICAL X AXIS
-  if(x_axis_class %in% c("character","factor") & y_axis == "None"){
+  
+  ### BAR PLOT FOR SINGLE CATEGORICAL X AXIS
+  if(x_axis_class %in% c("character","logical") &
+     y_axis == "None"){
     ## processing df
     df_proc = df %>% 
       group_by_at(x_axis) %>% 
@@ -149,8 +152,6 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
                 y = df_proc[["n"]],
                 type = "bar",  
                 orientation = 'v',
-                # color = factor(virus_se[["virus"]], levels=rev(todos_virus) ),
-                # colors =  cores_virus,
                 opacity = 0.75,
                 hoverinfo = 'text',
                 textposition = 'none',
@@ -172,6 +173,148 @@ plot_trait_fx = function(df, x_axis, y_axis, group){
                           showgrid = FALSE
              ),
              yaxis = list(title = list(text = "Number of entries", 
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ), 
+             
+             legend = list(orientation = 'h', 
+                           xanchor = "center",
+                           x = 0.5,
+                           y = -0.15,
+                           font = list(size = 12)
+                           
+             )
+             
+      )
+    
+  }
+  ### BAR PLOT FOR SINGLE NUMERICAL X AXIS
+  if(x_axis_class %in% c("integer","numerical") & 
+     y_axis == "None"){
+    ## processing df
+    df_proc = df 
+    
+    ## plotting
+    plot_trait = plot_ly() %>% 
+      add_trace(x = df_proc[[x_axis]], 
+                type = "histogram", 
+                opacity = 0.75
+                
+      ) %>%
+      layout(bargap = 0.1, 
+             barmode = 'stack',
+             xaxis = list(title = list(text = x_axis_title,
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ),
+             yaxis = list(title = list(text = "Number of entries", 
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ), 
+             
+             legend = list(orientation = 'h', 
+                           xanchor = "center",
+                           x = 0.5,
+                           y = -0.15,
+                           font = list(size = 12)
+                           
+             )
+             
+      )
+    
+  }
+  ### BOX PLOT NORMAL
+  if(x_axis_class %in% c("character","logical") & 
+     y_axis_class %in% c("integer","numerical")){
+    ## processing df
+    df_proc = df 
+    
+    ## plotting
+    plot_trait = plot_ly() %>% 
+               
+      add_trace(
+                x = df_proc[[x_axis]], 
+                y = df_proc[[y_axis]], 
+                type = "box", 
+                opacity = 0.75
+                ) %>%
+      layout(
+            xaxis = list(title = list(text = x_axis_title,
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ),
+             yaxis = list(title = list(text = y_axis_title, 
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ), 
+             
+             legend = list(orientation = 'h', 
+                           xanchor = "center",
+                           x = 0.5,
+                           y = -0.15,
+                           font = list(size = 12)
+                           
+             )
+             
+      )
+    
+  }
+  ### SCATTER PLOT 
+  if(x_axis_class %in% c("integer","numerical") & 
+     y_axis_class %in% c("integer","numerical")){
+    ## processing df
+    df_proc = df 
+    
+    ## plotting
+    plot_trait = plot_ly() %>% 
+      add_trace(x = df_proc[[x_axis]], 
+                y = df_proc[[y_axis]], 
+                type = "scatter", 
+                opacity = 0.75,
+                hoverinfo = 'text',
+                textposition = 'none',
+                text = paste('</br> x: ',df_proc[[x_axis]],
+                             '</br> y: ',df_proc[[y_axis]]
+                ) 
+                
+      ) %>%
+      layout(bargap = 0.1, 
+             barmode = 'stack',
+             xaxis = list(title = list(text = x_axis_title,
+                                       font = list(size = 14)),
+                          zeroline = FALSE, 
+                          mirror = FALSE,
+                          showline = FALSE, 
+                          linewidth = 1, 
+                          linecolor = 'black',
+                          showgrid = FALSE
+             ),
+             yaxis = list(title = list(text = y_axis_title, 
                                        font = list(size = 14)),
                           zeroline = FALSE, 
                           mirror = FALSE,

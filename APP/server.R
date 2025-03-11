@@ -57,11 +57,23 @@ server <- function(input, output, session) {
   ## trait names
   trait_names = reactive({
     tn = colnames(trait_df()) 
-    tn = tn[!grepl("key|data_source|species_reported|experiment_", tn)]
+    tn = tn[!grepl("key|data_source|species_reported|reference", tn)]
     tn = sort(tn)
     return(tn)
   })
-  
+  ## categorical trait names
+  cat_trait_names = reactive({
+    tc = unlist(lapply(trait_df(), class))
+    ctn = colnames(trait_df())[tc %in% c("character", "logical")]
+    ctn = ctn[!grepl("key|data_source|species_reported|reference", ctn)]
+    return(ctn)
+  })
+  ## numerical trait names
+  num_trait_names = reactive({
+    tc = unlist(lapply(trait_df(), class))
+    ntn = colnames(trait_df())[tc %in% c("integer", "numerical")]
+    return(ntn)
+  })
   ### tab title
   observeEvent(input$tabs, {
     if(input$tabs == "home"){
@@ -94,8 +106,8 @@ server <- function(input, output, session) {
       shinyjs::hide("selection_4")
     }
     if(input$tabs == "phylogeny"){
-      output$selection_1_label = renderText({"Select a first trait"})
-      output$selection_2_label = renderText({"Select a second trait"})
+      output$selection_1_label = renderText({"Select a categorical trait"})
+      output$selection_2_label = renderText({"Select a numerical trait"})
       output$selection_3_label = renderText({NULL})
       output$selection_4_label = renderText({NULL})
       shinyjs::show("selection_1")
@@ -121,12 +133,12 @@ server <- function(input, output, session) {
       updateSelectInput(
         session, 
         "selection_1",
-        choices = c("None", trait_names())
+        choices = c("None", cat_trait_names())
       )
       updateSelectInput(
         session, 
         "selection_2",
-        choices = c("None", trait_names())
+        choices = c("None", num_trait_names())
       )
     }
     if(input$tabs == "trait"){
