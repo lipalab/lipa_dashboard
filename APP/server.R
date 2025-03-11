@@ -39,7 +39,7 @@ names(trait_ds) = trait_ds_names
 
 server <- function(input, output, session) {
   
-  ### rective datasets
+  ### REACTIVE DATASETS
   ## phylogenetic tree
   phylo_tr = reactive({
     ## select phylogenetic tree
@@ -54,7 +54,7 @@ server <- function(input, output, session) {
     tdf = rbindlist(tdl, fill = T)
     return(tdf)
   })
-  ### reactive elements
+  ### REACTIVE ELEMENTS
   ## trait names
   trait_names = reactive({
     tn = colnames(trait_df()) 
@@ -98,7 +98,7 @@ server <- function(input, output, session) {
       })
     }
   })
-  ## selection labels
+  ## selection box labels
   observe({
     if(input$tabs == "home"){
       shinyjs::hide("selection_1")
@@ -134,7 +134,7 @@ server <- function(input, output, session) {
       shinyjs::hide("selection_4")
     }
   })
-  ## selection choices
+  ## selection box choices
   observe({
     if(input$tabs == "phylogeny"){
       updateSelectInput(
@@ -161,7 +161,7 @@ server <- function(input, output, session) {
       )
     }
   })
-  ## plot to display
+  ## major display
   observe({
     if(input$tabs == "phylogeny"){
       shinyjs::show("plot_phylogeny")
@@ -179,7 +179,6 @@ server <- function(input, output, session) {
       shinyjs::show("plot_geography")
     }
     })
-    
   ## plot phylogeny 
   observe({
     if(input$tabs == "phylogeny"){
