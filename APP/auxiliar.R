@@ -438,7 +438,7 @@ plot_geo_fx = function(){
   
   ### base map
   plot_map = leaflet() %>%
-    addProviderTiles(providers$OpenTopoMap) %>%  
+    addProviderTiles(providers$OpenTopoMap) %>% ### providers$CartoDB.Positron ; providers$OpenTopoMap
     setView(lng = -46.565744, lat =-23.677659, zoom= 2) 
   
   ### return

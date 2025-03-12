@@ -1,3 +1,4 @@
 # LIPA dashboard
 
-https://rstudio.github.io/shinydashboard/structure.html#background-shiny-and-html
+
+This is the repository for the code utilized to build the LIPA_dashboard[https://lipaufabc.shinyapps.io/lipa_dashboard/]
