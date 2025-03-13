@@ -120,7 +120,13 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
 }
 
 ### plot trait data
-plot_trait_fx = function(df, x_axis, y_axis, group){
+plot_trait_fx = function(df, x_axis, y_axis, data_source){
+  
+  ### apply filter
+  if(data_source != "all sources"){
+    df = df %>% 
+      filter(data_source == data_source)
+  }
   
   ### x axis
   x_axis_class = class(df[[x_axis]])

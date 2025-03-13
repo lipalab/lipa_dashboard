@@ -56,6 +56,8 @@ server <- function(input, output, session) {
     tdl = trait_ds[input$select_trait_ds]
     ## bind to dataframe
     tdf = rbindlist(tdl, fill = T)
+    ## filter traits by source
+    tdf = tdf %>% filter(data_source %in% input$filter_trait_source)
     return(tdf)
   })
   ### REACTIVE ELEMENTS
@@ -123,8 +125,8 @@ server <- function(input, output, session) {
     if(input$tabs == "trait"){
       output$selection_1_label = renderText({"X-axis trait"})
       output$selection_2_label = renderText({"Y-axis trait"})
-      output$selection_3_label = renderText({"Grouping variable"})
-      output$selection_4_label = renderText({"Apply a filter"})
+      output$selection_3_label = renderText({NULL})
+      output$selection_4_label = renderText({NULL})
       shinyjs::show("selection_1")
       shinyjs::show("selection_2")
       shinyjs::hide("selection_3")
@@ -226,7 +228,7 @@ server <- function(input, output, session) {
           df = trait_df(),
           x_axis = input$selection_1,
           y_axis = input$selection_2,
-          group = input$selection_3
+          data_source = input$selection_3
         )
       })
     } else {

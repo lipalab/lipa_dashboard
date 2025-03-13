@@ -97,7 +97,37 @@ sidebar = shinydashboard::dashboardSidebar(
           selectedTextFormat = "count > 2"
         )
       )
+    ),
+    shinydashboard::menuItem(
+      "Filter traits",
+      tabName = 'filter_trait',
+      icon = shiny::icon('database'),
+      selected = FALSE,
+      
+      shinyWidgets::pickerInput(
+        inputId = "filter_trait_source",
+        label = "by source",
+        choices = c(
+          "experiment",
+          "field",
+          "herbarium",
+          "literature"
+        ),
+        selected = c(
+          "experiment",
+          "field",
+          "herbarium",
+          "literature"
+        ),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 1"
+        )
+      )
     )
+    
   )
   
 )
