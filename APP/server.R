@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   ## numerical trait names
   num_trait_names = reactive({
     tc = unlist(lapply(trait_df(), class))
-    ntn = colnames(trait_df())[tc %in% c("integer", "numerical")]
+    ntn = colnames(trait_df())[tc %in% c("integer", "numeric")]
     return(ntn)
   })
   ## tab title

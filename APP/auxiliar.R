@@ -122,12 +122,6 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
 ### plot trait data
 plot_trait_fx = function(df, x_axis, y_axis, data_source){
   
-  ### apply filter
-  if(data_source != "all sources"){
-    df = df %>% 
-      filter(data_source == data_source)
-  }
-  
   ### x axis
   x_axis_class = class(df[[x_axis]])
   x_axis_title = gsub(pattern ="_",
@@ -201,7 +195,7 @@ plot_trait_fx = function(df, x_axis, y_axis, data_source){
     
   }
   ### HISTOGRAM FOR NUMERICAL X AXIS
-  if(x_axis_class %in% c("integer","numerical") & 
+  if(x_axis_class %in% c("integer","numeric") & 
      y_axis == "None"){
    
     ## plotting
@@ -245,7 +239,7 @@ plot_trait_fx = function(df, x_axis, y_axis, data_source){
   }
   ### BOX PLOT VERTICAL
   if(x_axis_class %in% c("character","logical") & 
-     y_axis_class %in% c("integer","numerical")){
+     y_axis_class %in% c("integer","numeric")){
     
     ## plotting
     plot_trait = plot_ly() %>% 
@@ -288,7 +282,7 @@ plot_trait_fx = function(df, x_axis, y_axis, data_source){
     
   }
   ### BOX PLOT HORIZONTAL
-  if(x_axis_class %in% c("integer","numerical") & 
+  if(x_axis_class %in% c("integer","numeric") & 
      y_axis_class %in% c("character","logical")){
     
     ## plotting
@@ -331,8 +325,8 @@ plot_trait_fx = function(df, x_axis, y_axis, data_source){
       )
   }
   ### SCATTER PLOT 
-  if(x_axis_class %in% c("integer","numerical") & 
-     y_axis_class %in% c("integer","numerical")){
+  if(x_axis_class %in% c("integer","numeric") & 
+     y_axis_class %in% c("integer","numeric")){
     
     ## plotting
     plot_trait = plot_ly() %>% 
