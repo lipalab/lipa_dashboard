@@ -166,6 +166,16 @@ body = shinydashboard::dashboardBody(
                )
         )
       ),
+      ## table of datasets 
+      fluidRow(
+        column(
+          width = 12,
+          align = "center",
+          shiny::tableOutput(
+            "table_ds"
+          )
+        )
+      ),
       ## plot phylogeny 
       fluidRow(
         column(

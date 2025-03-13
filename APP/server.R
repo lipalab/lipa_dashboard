@@ -14,6 +14,9 @@ source("auxiliar.R")
 
 ############################### LOADING DATASETS ###############################
 
+### metadata
+ds_control = read.csv("datasets/dataset_control.csv")
+
 ### phylogeny datasets names
 phylo_ds_files = list.files(
   path = "datasets",
@@ -164,22 +167,42 @@ server <- function(input, output, session) {
   })
   ## major display
   observe({
+    if(input$tabs == "home"){
+      shinyjs::show("table_ds")
+      shinyjs::hide("plot_phylogeny")
+      shinyjs::hide("plot_trait")
+      shinyjs::hide("plot_geography")
+    }
     if(input$tabs == "phylogeny"){
+      shinyjs::hide("table_ds")
       shinyjs::show("plot_phylogeny")
       shinyjs::hide("plot_trait")
       shinyjs::hide("plot_geography")
     }
     if(input$tabs == "trait"){
+      shinyjs::hide("table_ds")
       shinyjs::hide("plot_phylogeny")
       shinyjs::show("plot_trait")
       shinyjs::hide("plot_geography")
     }
     if(input$tabs == "geography"){
+      shinyjs::hide("table_ds")
       shinyjs::hide("plot_phylogeny")
       shinyjs::hide("plot_trait")
       shinyjs::show("plot_geography")
     }
     })
+  ## table of datasets
+  observe({
+    if(input$tabs == "home"){
+      output$table_ds = renderTable(
+        ds_control, 
+        striped = TRUE
+      )
+    } else {
+      output$table_ds = renderTable(NULL)
+    }
+  })
   ## plot phylogeny 
   observe({
     if(input$tabs == "phylogeny"){
