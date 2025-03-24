@@ -1,0 +1,16 @@
+variable,description,type,scale
+bacteroid_type,The type of intracellular structure formed when a plant is infected by rhizobia,categorical,-
+experiment_matrix_id,The identification code of a plant matrix (mother plant) in a given experiment. Equal codes may not represent the same plant matrix across experiments.,categorical,-
+experiment_plant_id,The identification code of a plant in a given experiment. Equal codes may not represent the same plant across experiments.,categorical,-
+experiment_day,Time elapsed since the start of an experiment.,numeric,day
+experiment_treatment,The treatement applied to a plant in a given experiment. Equal names may not represent the same type of treament across experiments.,categorical,-
+flower_bud_n,The number of flower buds counted in a plant.,numeric,count
+flower_n,The number of flowers counted in a plant.,numeric,count
+flower_day_rate,The number of flowers oppening in a plant by day.,numeric,flower:day
+flowering_first_day,Time elapsed until the first flowering of a plant.,numeric,day
+flowering_peak_day,Time elapsed until the peak flowering of a plant.,numeric,day
+flowering_presence,Whether a plant was flowering.,logic,-
+leaf_n,The number of leaves counted in a plant.,numeric,count
+leaf_scar_n,The number of leaf scars counted in a plant.,numeric,count
+nodule_presence,Whether a plant had nodules in the root system.,logic,-
+plant_height,The linear distance between the ground layear and the upper boundary of the plant shoot.,numeric,meter

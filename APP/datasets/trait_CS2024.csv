@@ -1,4 +1,4 @@
-key,data_source,species_reported,experiment_plant_id,experiment_matrix_id,experiment_treatment,experiment_time_day,plant_height_m,leaf_number,leaf_scar_number,flower_bud_number,flower_number,flower_opened_day_ratio,flowering_presence,flowering_first_day,flowering_peak_day
+key,data_source,species_reported,experiment_plant_id,experiment_matrix_id,experiment_treatment,experiment_day,plant_height,leaf_n,leaf_scar_n,flower_bud_n,flower_n,flower_day_rate,flowering_presence,flowering_first_day,flowering_peak_day
 CS2024_000001,experiment,Chamaecrista_latistipula,P14_a,P14,rhizobium_absent_organic_matter,113,0.39,12,7,0,NA,NA,FALSE,NA,NA
 CS2024_000002,experiment,Chamaecrista_latistipula,P06_a,P06,rhizobium_absent_organic_matter,113,0.36,25,2,0,NA,NA,TRUE,220,220
 CS2024_000003,experiment,Chamaecrista_latistipula,P12_a,P12,rhizobium_absent_organic_matter,113,0.355,13,3,0,NA,NA,FALSE,NA,NA

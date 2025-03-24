@@ -16,7 +16,6 @@ trait_ds_files =list.files(
 )
 trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
  
-
 ### HEADER
 header = shinydashboard::dashboardHeader(
   title = "LIPA dashboard",
@@ -101,7 +100,7 @@ sidebar = shinydashboard::dashboardSidebar(
     shinydashboard::menuItem(
       "Filter traits",
       tabName = 'filter_trait',
-      icon = shiny::icon('database'),
+      icon = shiny::icon('filter'),
       selected = FALSE,
       
       shinyWidgets::pickerInput(
@@ -203,6 +202,16 @@ body = shinydashboard::dashboardBody(
           align = "center",
           shiny::tableOutput(
             "table_ds"
+          )
+        )
+      ),
+      tags$br(),
+      fluidRow(
+        column(
+          width = 12,
+          align = "center",
+          shiny::tableOutput(
+            "table_metadata"
           )
         )
       ),

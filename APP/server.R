@@ -14,23 +14,22 @@ source("auxiliar.R")
 
 ############################### LOADING DATASETS ###############################
 
-### metadata
-ds_control = read.csv("datasets/dataset_control.csv")
-
-### phylogeny datasets names
+### home data
+ds_table = read.csv("datasets/dataset_table.csv")
+metadata = read.csv("datasets/metadata.csv")
+  
+### phylogeny datasets
 phylo_ds_files = list.files(
   path = "datasets",
   pattern ="phylo"
 )
+phylo_ds = lapply( paste0("datasets/", phylo_ds_files), read.nexus)
 
-### trait datasets names
+### trait datasets
 trait_ds_files =list.files(
   path = "datasets",
   pattern ="trait"
 )
-
-### read datasets into lists
-phylo_ds = lapply( paste0("datasets/", phylo_ds_files), read.nexus)
 trait_ds = lapply( paste0("datasets/", trait_ds_files), read.csv)
 
 ### naming datasets
@@ -171,24 +170,28 @@ server <- function(input, output, session) {
   observe({
     if(input$tabs == "home"){
       shinyjs::show("table_ds")
+      shinyjs::show("table_metadata")
       shinyjs::hide("plot_phylogeny")
       shinyjs::hide("plot_trait")
       shinyjs::hide("plot_geography")
     }
     if(input$tabs == "phylogeny"){
       shinyjs::hide("table_ds")
+      shinyjs::hide("table_metadata")
       shinyjs::show("plot_phylogeny")
       shinyjs::hide("plot_trait")
       shinyjs::hide("plot_geography")
     }
     if(input$tabs == "trait"){
       shinyjs::hide("table_ds")
+      shinyjs::hide("table_metadata")
       shinyjs::hide("plot_phylogeny")
       shinyjs::show("plot_trait")
       shinyjs::hide("plot_geography")
     }
     if(input$tabs == "geography"){
       shinyjs::hide("table_ds")
+      shinyjs::hide("table_metadata")
       shinyjs::hide("plot_phylogeny")
       shinyjs::hide("plot_trait")
       shinyjs::show("plot_geography")
@@ -198,7 +201,11 @@ server <- function(input, output, session) {
   observe({
     if(input$tabs == "home"){
       output$table_ds = renderTable(
-        ds_control, 
+        ds_table, 
+        striped = TRUE
+      )
+      output$table_metadata = renderTable(
+        metadata, 
         striped = TRUE
       )
     } else {
