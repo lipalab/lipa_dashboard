@@ -72,12 +72,14 @@ server <- function(input, output, session) {
     tc = unlist(lapply(trait_df(), class))
     ctn = colnames(trait_df())[tc %in% c("character", "logical")]
     ctn = ctn[!grepl("key|data_source|species_reported|reference", ctn)]
+    ctn = sort(ctn)
     return(ctn)
   })
   ## numerical trait names
   num_trait_names = reactive({
     tc = unlist(lapply(trait_df(), class))
     ntn = colnames(trait_df())[tc %in% c("integer", "numeric")]
+    ntn = sort(ntn)
     return(ntn)
   })
   ## tab title

@@ -1,16 +1,50 @@
 variable,description,type,scale
-bacteroid_type,The type of intracellular structure formed when a plant is infected by rhizobia,categorical,-
+bacteroid_type,The type of intracellular structure formed in the root system of a plant when infected by rhizobia.,categorical,-
+experiment_day,The number of days elapsed since the start of an experiment.,numeric,day
+experiment_flower_id,The identification code of a flower in a given experiment. Equal codes may not represent the same flower across experiments.,categorical,-
 experiment_matrix_id,The identification code of a plant matrix (mother plant) in a given experiment. Equal codes may not represent the same plant matrix across experiments.,categorical,-
 experiment_plant_id,The identification code of a plant in a given experiment. Equal codes may not represent the same plant across experiments.,categorical,-
-experiment_day,Time elapsed since the start of an experiment.,numeric,day
-experiment_treatment,The treatement applied to a plant in a given experiment. Equal names may not represent the same type of treament across experiments.,categorical,-
-flower_bud_n,The number of flower buds counted in a plant.,numeric,count
-flower_n,The number of flowers counted in a plant.,numeric,count
-flower_day_rate,The number of flowers oppening in a plant by day.,numeric,flower:day
-flowering_first_day,Time elapsed until the first flowering of a plant.,numeric,day
-flowering_peak_day,Time elapsed until the peak flowering of a plant.,numeric,day
+experiment_treatment,The treatement applied to an observation in a given experiment. Equal names may not represent the same type of treament across experiments.,categorical,-
+flower_bud_n,The number of flower buds counted on a plant.,numeric,count
+flower_day_rate,The number of flowers oppening on a plant by day.,numeric,flower:day
+flower_herkogamy,"The linear distance between the pollen-receiving and the pollen-presenting structures within a flower. In buzz-pollinated flowers, it is the distance between the stigma and the closest anther pore.",numeric,milimeter (mm)
+flower_n,The number of flowers counted on a plant.,numeric,count
+flower_visiting_hour,The hour when a flower was visited by an animal.,numeric,ante meridiem (am)
+flower_visiting_time,Time elapsed between sucessive visits to a flower. Time zero (0) represents the first visit.,numeric,minute (min)
+flower_visitor_coupling,A flower-visitor phenotypic coupling index. It is calculated as the difference between the flower herkogamy and the visitor abdominal width.,numeric,milimeter (mm)
+flowering_first_day,The number of days elapsed until the first flowering of a plant.,numeric,day
+flowering_peak_day,The number of days elapsed until the peak flowering of a plant.,numeric,day
 flowering_presence,Whether a plant was flowering.,logic,-
-leaf_n,The number of leaves counted in a plant.,numeric,count
-leaf_scar_n,The number of leaf scars counted in a plant.,numeric,count
-nodule_presence,Whether a plant had nodules in the root system.,logic,-
-plant_height,The linear distance between the ground layear and the upper boundary of the plant shoot.,numeric,meter
+fruit_placentation_n,The number of placentations counted in a fruit.,numeric,count
+fruiting_presence,Whether a plant formed fruits.,logic,-
+leaf_n,The number of leaves counted on a plant.,numeric,count
+leaf_scar_n,The number of leaf scars counted on a plant.,numeric,count
+nodule_presence,Whether a plant had nodules in its root system.,logic,-
+plant_height,The linear distance between the ground layer and the upper boundary of the plant shoot.,numeric,meter (m)
+pollen_deposited_n,The number of pollen grains counted on a flower stigma.,numeric,count
+pollen_remained_n,The number of pollen grains counted from all anthers of a visited flower.,numeric,count
+pollen_removed_n,The difference of pollen grains between unvisited and visited flowers.,numeric,count
+seed_inviable_n,The number of inviables seeds counted in a fruit.,numeric,count
+seed_lost_n,The number of lost seeds counted in a fruit.,numeric,count
+seed_viable_n,The number of viables seeds counted in a fruit. ,numeric,count
+seed_viable_ratio,The number of viables seeds divided by the number of placentation in a fruit.,numeric,seed:placentation
+visitor_abdomen_width,The linear distance across the widest part of the abdomen of a bee visitor.,numeric,milimeter (mm)
+visitor_amplitude_max,Maximum amplitude,numeric,second:pulse
+visitor_amplitude_mean,Average relative peak of amplitude,numeric,second (s)
+visitor_amplitude_min,Minimum amplitude,numeric,second (s)
+visitor_amplitude_sd,Standard deviation of average relative of peak amplitude,numeric,second (s)
+visitor_buzzing_pulse_ratio,The buzzing time divided by the number of vibration pulses,numeric,milimeter (mm)
+visitor_buzzing_time,The time taken by a bee visitor vibrating and extracting pollen grains from poricidal anthers.,numeric,Decibels (dB)
+visitor_displacement_max,the farthest angle a bee visitor moves between its landing point and the first pulse around the central anthers. ,numeric,degree (°) 
+visitor_displacement_mean,Mean angular displacement between vibration pulses,numeric,Hertz (Hz)
+visitor_displacement_sum,Summed angular displacement,numeric,Decibels (dB)
+visitor_frequency_max,Maximum frequency,numeric,degree:pulse
+visitor_frequency_mean,Average fundamental frequency,numeric,Hertz (Hz)
+visitor_frequency_sd,Standard deviation of average fundamental frequency,numeric,Decibels (dB)
+visitor_grooming_time,The time taken by a bee visitor cleaning itself and transfering pollen grains to its scopa or corbicula.,numeric,count
+visitor_handling_time,The sum of the buzzing and the grooming times.,numeric,-
+visitor_intertegular,The linear distance between the inner margins of the tegulae of a bee visitor.,numeric,-
+visitor_pulse_n,The number of vibration pulses applied to a flower by a bee visitor.,categorical,-
+visitor_species,The taxonomic identification of an animal visiting a flower.,numeric,degree (°) 
+visitor_thorax_width,The linear distance across the widest part of the thorax of a bee visitor.,numeric,milimeter (mm)
+visitor_touched_stigma,Whether a visitor had touched the stigma of a flower.,logic,-

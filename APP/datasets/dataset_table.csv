@@ -1,4 +1,5 @@
 dataset,description,type,DOI
 EJ0000,A continously updated list of Chamaecrista species with confirmed root nodulation and their bacteriod type.,trait,NA
-CS2024,An experiment testing the effect of rhizobium infection and soil type on floral atractiveness for a single Chamaecrista species. ,trait,10.1002/ajb2.16363
-JR2025,A time-calibrated phylogenetic tree of 231 Chamaecrista species based on six molecular markers,phylogeny,NA
+BB2023,Data from a study testing the effect of bee traits and behaviour on the reproduction of a single Chamaecrista species. ,trait,10.1002/ajb2.16236
+CS2024,Data from a study testing the effect of rhizobium infection and soil type on the floral atractiveness of a single Chamaecrista species. ,trait,10.1002/ajb2.16363
+JR2025,A time-calibrated phylogenetic tree of 231 Chamaecrista species based on six molecular markers.,phylogeny,NA

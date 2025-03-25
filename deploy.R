@@ -8,7 +8,7 @@ rsconnect::setAccountInfo(
   )
 ### containerizar a imagem
 rsconnect::deployApp(
-  appDir = 'C:/Users/eduar/OneDrive/Desktop/GitHub/lipa_dashboard/APP',
+  appDir = 'C:/Users/eduar/OneDrive/Documents/GitHub/lipa_dashboard/APP',
   appId = '14225081',
   appName = 'lipa_dashboard',
   account = 'lipaufabc'
