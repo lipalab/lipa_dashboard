@@ -29,22 +29,22 @@ seed_lost_n,The number of lost seeds counted in a fruit.,numeric,count
 seed_viable_n,The number of viables seeds counted in a fruit. ,numeric,count
 seed_viable_ratio,The number of viables seeds divided by the number of placentation in a fruit.,numeric,seed:placentation
 visitor_abdomen_width,The linear distance across the widest part of the abdomen of a bee visitor.,numeric,milimeter (mm)
-visitor_amplitude_max,Maximum amplitude,numeric,second:pulse
-visitor_amplitude_mean,Average relative peak of amplitude,numeric,second (s)
-visitor_amplitude_min,Minimum amplitude,numeric,second (s)
-visitor_amplitude_sd,Standard deviation of average relative of peak amplitude,numeric,second (s)
-visitor_buzzing_pulse_ratio,The buzzing time divided by the number of vibration pulses,numeric,milimeter (mm)
-visitor_buzzing_time,The time taken by a bee visitor vibrating and extracting pollen grains from poricidal anthers.,numeric,Decibels (dB)
-visitor_displacement_max,the farthest angle a bee visitor moves between its landing point and the first pulse around the central anthers. ,numeric,degree (°) 
-visitor_displacement_mean,Mean angular displacement between vibration pulses,numeric,Hertz (Hz)
-visitor_displacement_sum,Summed angular displacement,numeric,Decibels (dB)
-visitor_frequency_max,Maximum frequency,numeric,degree:pulse
-visitor_frequency_mean,Average fundamental frequency,numeric,Hertz (Hz)
-visitor_frequency_sd,Standard deviation of average fundamental frequency,numeric,Decibels (dB)
-visitor_grooming_time,The time taken by a bee visitor cleaning itself and transfering pollen grains to its scopa or corbicula.,numeric,count
-visitor_handling_time,The sum of the buzzing and the grooming times.,numeric,-
-visitor_intertegular,The linear distance between the inner margins of the tegulae of a bee visitor.,numeric,-
-visitor_pulse_n,The number of vibration pulses applied to a flower by a bee visitor.,categorical,-
-visitor_species,The taxonomic identification of an animal visiting a flower.,numeric,degree (°) 
+visitor_amplitude_max,The maximum relative peak of amplitude of vibrational pulses by a bee visitor.,numeric,Decibels (dB)
+visitor_amplitude_mean,The average relative peak of amplitude of vibrational pulses by a bee visitor.,numeric,Decibels (dB)
+visitor_amplitude_min,The minimum relative peak of amplitude of vibrational pulses by a bee visitor.,numeric,Decibels (dB)
+visitor_amplitude_sd,The standard deviation of the average relative peak of amplitude during virbational pulses of a bee visitor.,numeric,Decibels (dB)
+visitor_buzzing_pulse_ratio,The buzzing time divided by the number of vibration pulses,numeric,second:pulse
+visitor_buzzing_time,The time taken by a bee visitor vibrating and extracting pollen grains from poricidal anthers.,numeric,second (s)
+visitor_displacement_max,"The greatest circular movement by a bee visitor, either clockwise or counterclockwise movements, between the vibrational pulses applied to the anthers. ",numeric,degree (°) 
+visitor_displacement_mean,"The sum of all circular movements by a bee visitor divided by the number of vibrational pulses applied to the anthers. The calculation disconsiders the position during the first vibrational pulse, which is set to zero.",numeric,degree:pulse
+visitor_displacement_sum,"The sum of all circular movements by a bee visitor, including clockwise and counterclockwise movements, between the vibrational pulses applied to the anthers.",numeric,degree (°) 
+visitor_frequency_max,The maximum frequency of vibrational pulses by a bee visitor.,numeric,Hertz (Hz)
+visitor_frequency_mean,The average fundamental frequency of vibrational pulses by a bee visitor.,numeric,Hertz (Hz)
+visitor_frequency_sd,The standard deviation of the fundamental frequency of vibrational pulses by a bee visitor.,numeric,Hertz (Hz)
+visitor_grooming_time,The time taken by a bee visitor cleaning itself and transfering pollen grains to its scopa or corbicula.,numeric,second (s)
+visitor_handling_time,The sum of the buzzing and the grooming times.,numeric,second (s)
+visitor_intertegular,The linear distance between the inner margins of the tegulae of a bee visitor.,numeric,milimeter (mm)
+visitor_pulse_n,The number of vibrational pulses applied by a bee visitor.,numeric,count
+visitor_species,The taxonomic identification of an animal visiting a flower.,categorical,-
 visitor_thorax_width,The linear distance across the widest part of the thorax of a bee visitor.,numeric,milimeter (mm)
 visitor_touched_stigma,Whether a visitor had touched the stigma of a flower.,logic,-
