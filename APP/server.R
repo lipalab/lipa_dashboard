@@ -32,11 +32,20 @@ trait_ds_files =list.files(
 )
 trait_ds = lapply( paste0("datasets/", trait_ds_files), read.csv)
 
+### geogrpahic datasets
+geo_ds_files =list.files(
+  path = "datasets",
+  pattern ="geo"
+)
+geo_ds = lapply( paste0("datasets/", geo_ds_files), read.csv)
+
 ### naming datasets
 phylo_ds_names = gsub(pattern = "phylo_|.tree", "", phylo_ds_files)
 names(phylo_ds) = phylo_ds_names
 trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
 names(trait_ds) = trait_ds_names 
+geo_ds_names = gsub(pattern = "geo_|.csv", "", geo_ds_files)
+names(geo_ds) = geo_ds_names 
 
 #################################### SERVER ####################################
 
@@ -58,6 +67,16 @@ server <- function(input, output, session) {
     ## filter traits by source
     tdf = tdf %>% filter(data_source %in% input$filter_trait_source)
     return(tdf)
+  })
+  ## geographic dataframe
+  geo_df = reactive({
+    ## select trait datasets
+    gdl = geo_ds[input$select_geo_ds]
+    ## bind to dataframe
+    gdf = rbindlist(gdl, fill = T)
+    ## filter geo by species
+    # gdf = gdf %>% filter(species_reported %in% input$filter_geo_sp)
+    return(gdf)
   })
   ### REACTIVE ELEMENTS
   ## trait names
@@ -248,7 +267,7 @@ server <- function(input, output, session) {
   observe({
     if(input$tabs == "geography"){
       output$plot_geography = leaflet::renderLeaflet({
-        plot_geo_fx()
+        plot_geo_fx(df = geo_df())
       })
     } else {
       output$plot_geography = leaflet::renderLeaflet({NULL})

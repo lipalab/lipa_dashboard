@@ -434,11 +434,22 @@ plot_trait_fx = function(df, x_axis, y_axis, data_source){
 }
 
 ### plot geographic data
-plot_geo_fx = function(){
+plot_geo_fx = function(df){
   
   ### base map
-  plot_map = leaflet() %>%
+  plot_map = leaflet(data = df) %>%
     addProviderTiles(providers$OpenTopoMap) %>% ### providers$CartoDB.Positron ; providers$OpenTopoMap
+    addCircleMarkers(
+      lng = ~longitude, 
+      lat = ~latitude, 
+      radius = 2.5,
+      color = "black",
+      weight = 2,
+      fillColor = "gold",
+      fillOpacity = 0.4,
+      popup = ~as.character(species_reported), 
+      label = ~as.character(species_reported)
+    ) %>% 
     setView(lng = -46.565744, lat =-23.677659, zoom= 2) 
   
   ### return

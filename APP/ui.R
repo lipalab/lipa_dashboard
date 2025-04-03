@@ -15,7 +15,14 @@ trait_ds_files =list.files(
   pattern ="trait"
 )
 trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
- 
+
+### geographic datasets names
+geo_ds_files =list.files(
+  path = "datasets",
+  pattern ="geo"
+)
+geo_ds_names = gsub(pattern = "geo_|.csv", "", geo_ds_files)
+
 ### HEADER
 header = shinydashboard::dashboardHeader(
   title = "LIPA dashboard",
@@ -87,8 +94,8 @@ sidebar = shinydashboard::dashboardSidebar(
       shinyWidgets::pickerInput(
         inputId = "select_geo_ds",
         label = "Geographic datasets",
-        choices = c(),
-        selected = c(),
+        choices = geo_ds_names,
+        selected = geo_ds_names,
         multiple = TRUE,
         options = shinyWidgets::pickerOptions(
           actionsBox = TRUE, 
