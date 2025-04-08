@@ -45,6 +45,12 @@ sidebar = shinydashboard::dashboardSidebar(
       selected = TRUE
     ),
     shinydashboard::menuItem(
+      "Metadata", 
+      tabName = 'metadata', 
+      icon = shiny::icon('rectangle-list'),
+      selected = FALSE
+    ),
+    shinydashboard::menuItem(
       "Phylogenetic relationships", 
       tabName = 'phylogeny', 
       icon = shiny::icon('diagram-project'),
@@ -74,16 +80,16 @@ sidebar = shinydashboard::dashboardSidebar(
       selectInput(
         inputId = "select_phylo_ds",
         label = "Phylogenetic tree",
-        choices = phylo_ds_names,
-        selected = "JR2025",
+        choices = c(),
+        selected = c(),
         multiple = FALSE,
         width = "100%"
       ),
       shinyWidgets::pickerInput(
         inputId = "select_trait_ds",
         label = "Trait datasets",
-        choices = trait_ds_names,
-        selected = trait_ds_names,
+        choices = c(),
+        selected = c(),
         multiple = TRUE,
         options = shinyWidgets::pickerOptions(
           actionsBox = TRUE, 
@@ -94,8 +100,8 @@ sidebar = shinydashboard::dashboardSidebar(
       shinyWidgets::pickerInput(
         inputId = "select_geo_ds",
         label = "Geographic datasets",
-        choices = geo_ds_names,
-        selected = geo_ds_names,
+        choices = c(),
+        selected = c(),
         multiple = TRUE,
         options = shinyWidgets::pickerOptions(
           actionsBox = TRUE, 
@@ -217,7 +223,7 @@ body = shinydashboard::dashboardBody(
         column(
           width = 12,
           align = "center",
-          shiny::tableOutput(
+          DT::DTOutput(
             "table_metadata"
           )
         )

@@ -1,6 +1,12 @@
+### PARA FAZER:
+## link dos DOI;
+## filtro de unidades políticas para as coords;
+## dicionário interativo numa nova aba (OK);
+## coluna com nomes aceitos;
 
 if (!require("tidyverse")) install.packages("tidyverse"); require("tidyverse")
 if (!require("data.table")) install.packages("data.table"); require("data.table")
+if (!require("DT")) BiocManager::install("DT"); library("DT")
 if (!require("ggplot2")) install.packages("ggplot2"); library("ggplot2")
 if (!require("plotly")) install.packages("plotly"); library("plotly")
 if (!require("leaflet")) install.packages("leaflet"); library("leaflet")
@@ -79,6 +85,30 @@ server <- function(input, output, session) {
     return(gdf)
   })
   ### REACTIVE ELEMENTS
+  ## select datasets - filters 
+  observe({
+    
+    updateSelectInput(
+      session, 
+      inputId = "select_phylo_ds",
+      choices = phylo_ds_names,
+      selected = phylo_ds_names[1]
+    )
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "select_trait_ds",
+      choices = trait_ds_names,
+      selected = trait_ds_names
+    )
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "select_geo_ds",
+      choices = geo_ds_names,
+      selected = geo_ds_names
+    )
+      
+  })
+    
   ## trait names
   trait_names = reactive({
     tn = colnames(trait_df()) 
@@ -108,6 +138,11 @@ server <- function(input, output, session) {
         HTML("<h1>Welcome to the LIPA dashboard<h1>")
       })
     } 
+    if(input$tabs == "metadata"){
+      output$tab_title <-  renderUI({
+        HTML("<h1>Metadata<h1>")
+      })
+    } 
     if(input$tabs == "phylogeny"){
       output$tab_title <-  renderUI({
         HTML("<h1>Phylogenetic relationships<h1>")
@@ -127,6 +162,12 @@ server <- function(input, output, session) {
   ## selection box labels
   observe({
     if(input$tabs == "home"){
+      shinyjs::hide("selection_1")
+      shinyjs::hide("selection_2")
+      shinyjs::hide("selection_3")
+      shinyjs::hide("selection_4")
+    }
+    if(input$tabs == "metadata"){
       shinyjs::hide("selection_1")
       shinyjs::hide("selection_2")
       shinyjs::hide("selection_3")
@@ -191,6 +232,13 @@ server <- function(input, output, session) {
   observe({
     if(input$tabs == "home"){
       shinyjs::show("table_ds")
+      shinyjs::hide("table_metadata")
+      shinyjs::hide("plot_phylogeny")
+      shinyjs::hide("plot_trait")
+      shinyjs::hide("plot_geography")
+    }
+    if(input$tabs == "metadata"){
+      shinyjs::hide("table_ds")
       shinyjs::show("table_metadata")
       shinyjs::hide("plot_phylogeny")
       shinyjs::hide("plot_trait")
@@ -218,19 +266,25 @@ server <- function(input, output, session) {
       shinyjs::show("plot_geography")
     }
     })
-  ## table of datasets
+  ## home table of datasets
   observe({
     if(input$tabs == "home"){
       output$table_ds = renderTable(
         ds_table, 
         striped = TRUE
       )
-      output$table_metadata = renderTable(
-        metadata, 
-        striped = TRUE
-      )
     } else {
       output$table_ds = renderTable(NULL)
+    }
+  })
+  ## metadata table
+  observe({
+    if(input$tabs == "metadata"){
+      output$table_metadata = DT::renderDT({
+        metadata
+      })
+    } else {
+      output$table_metadata = DT::renderDT({NULL})
     }
   })
   ## plot phylogeny 
