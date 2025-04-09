@@ -1,5 +1,5 @@
 ### PARA FAZER:
-## link dos DOI;
+## link dos DOI (OK);
 ## filtro de unidades políticas para as coords (OK);
 ## dicionário interativo numa nova aba (OK);
 ## coluna com nomes aceitos;
@@ -45,6 +45,8 @@ geo_ds_files =list.files(
 )
 geo_ds = lapply( paste0("datasets/", geo_ds_files), read.csv)
 
+############################## PROCESSING DATASETS #############################
+
 ### naming datasets
 phylo_ds_names = gsub(pattern = "phylo_|.tree", "", phylo_ds_files)
 names(phylo_ds) = phylo_ds_names
@@ -52,6 +54,14 @@ trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
 names(trait_ds) = trait_ds_names 
 geo_ds_names = gsub(pattern = "geo_|.csv", "", geo_ds_files)
 names(geo_ds) = geo_ds_names 
+
+### HTML for links
+ds_table = ds_table %>% 
+  mutate(DOI = case_when(
+    !is.na(DOI) ~ paste0("<a href='",link,"'>",DOI,"</a>")
+  )) %>% 
+  select(!link)
+    
 
 #################################### SERVER ####################################
 
@@ -319,12 +329,11 @@ server <- function(input, output, session) {
   ## home table of datasets
   observe({
     if(input$tabs == "home"){
-      output$table_ds = renderTable(
-        ds_table, 
-        striped = TRUE
-      )
+      output$table_ds = DT::renderDT({
+        datatable(ds_table, escape=FALSE)
+      })
     } else {
-      output$table_ds = renderTable(NULL)
+      output$table_ds = DT::renderDT({NULL})
     }
   })
   ## metadata table
@@ -360,7 +369,7 @@ server <- function(input, output, session) {
           df = trait_df(),
           x_axis = input$selection_1,
           y_axis = input$selection_2,
-          data_source = input$filter_trait_source,
+          dsource = input$filter_trait_source,
           species = input$filter_trait_sp
         )
       })

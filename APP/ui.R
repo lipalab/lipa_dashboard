@@ -270,7 +270,7 @@ body = shinydashboard::dashboardBody(
         column(
           width = 12,
           align = "center",
-          shiny::tableOutput(
+          DT::DTOutput(
             "table_ds"
           )
         )

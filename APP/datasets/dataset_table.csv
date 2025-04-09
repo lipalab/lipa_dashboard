@@ -1,6 +1,6 @@
-dataset,description,data_type,DOI
-BB2023,Trait data from a study testing the effect of bee traits and behaviour on the reproduction of a single Chamaecrista species. ,trait,10.1002/ajb2.16236
-CS2024,Trait data from a study testing the effect of rhizobium infection and soil type on the floral atractiveness of a single Chamaecrista species. ,trait,10.1002/ajb2.16363
-EJ0000,A continously updated list of Chamaecrista species with confirmed root nodulation and their bacteriod type.,trait,NA
-JR2025,A time-calibrated phylogenetic tree of 231 Chamaecrista species based on five molecular markers.,phylogeny,NA
-LP2024,Geogrpahic data from a study assessing the evolutionary correlation between plant life forms and environmental conditions in a clade of Chamaecrista.,geography,10.1111/nph.19601
+dataset,description,data_type,DOI,link
+BB2023,Trait data from a study testing the effect of bee traits and behaviour on the reproduction of a single Chamaecrista species. ,trait,10.1002/ajb2.16236,https://bsapubs.onlinelibrary.wiley.com/doi/full/10.1002/ajb2.16236
+CS2024,Trait data from a study testing the effect of rhizobium infection and soil type on the floral atractiveness of a single Chamaecrista species. ,trait,10.1002/ajb2.16363,https://bsapubs.onlinelibrary.wiley.com/doi/10.1002/ajb2.16363
+EJ0000,A continously updated list of Chamaecrista species with confirmed root nodulation and their bacteriod type.,trait,NA,NA
+JR2025,A time-calibrated phylogenetic tree of 231 Chamaecrista species based on five molecular markers.,phylogeny,NA,NA
+LP2024,Geogrpahic data from a study assessing the evolutionary correlation between plant life forms and environmental conditions in a clade of Chamaecrista.,geography,10.1111/nph.19601,https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.19601
