@@ -1,6 +1,9 @@
 
 ### plot phylogenetic tree
-plot_phylo_fx = function(tr, df, trait1, trait2){
+plot_phylo_fx = function(tr, 
+                         df, 
+                         trait1, 
+                         trait2){
   
   ## plot base phylogeny
   phy1 = ggtree::ggtree(
@@ -120,7 +123,19 @@ plot_phylo_fx = function(tr, df, trait1, trait2){
 }
 
 ### plot trait data
-plot_trait_fx = function(df, x_axis, y_axis, data_source){
+plot_trait_fx = function(df, 
+                         x_axis, 
+                         y_axis, 
+                         data_source,
+                         species){
+  
+  ## filter traits
+  if(!is.null(data_source)){
+    df = df %>% filter(data_source %in% data_source)
+  }
+  if(!is.null(species)){
+    df = df %>% filter(species_reported %in% species)
+  }
   
   ### x axis
   x_axis_class = class(df[[x_axis]])
@@ -434,23 +449,39 @@ plot_trait_fx = function(df, x_axis, y_axis, data_source){
 }
 
 ### plot geographic data
-plot_geo_fx = function(df){
+plot_geo_fx = function(df,
+                       dsource,
+                       country,
+                       state,
+                       species){
   
-  ### base map
-  plot_map = leaflet(data = df) %>%
-    addProviderTiles(providers$OpenTopoMap) %>% ### providers$CartoDB.Positron ; providers$OpenTopoMap
-    addCircleMarkers(
-      lng = ~longitude, 
-      lat = ~latitude, 
-      radius = 2.5,
-      color = "black",
-      weight = 2,
-      fillColor = "gold",
-      fillOpacity = 0.4,
-      popup = ~as.character(species_reported), 
-      label = ~as.character(species_reported)
-    ) %>% 
-    setView(lng = -46.565744, lat =-23.677659, zoom= 2) 
+  ### filter coordinates
+  df = df %>% filter(data_source %in% dsource)
+  df = df %>% filter(collection_country %in% country)
+  df = df %>% filter(collection_stateProvince %in% state)
+  df = df %>% filter(species_reported %in% species)
+  
+  ### plot map
+  if(nrow(df) == 0){ ## if dataset empty
+    plot_map = leaflet() %>%
+      addProviderTiles(providers$OpenTopoMap) %>% 
+      setView(lng = -46.565744, lat =-23.677659, zoom= 2) 
+  } else { ## if not
+    plot_map = leaflet(data = df) %>%
+      addProviderTiles(providers$OpenTopoMap) %>% 
+      addCircleMarkers(
+        lng = ~longitude, 
+        lat = ~latitude, 
+        radius = 2.5,
+        color = "black",
+        weight = 2,
+        fillColor = "gold",
+        fillOpacity = 0.4,
+        popup = ~as.character(species_reported), 
+        label = ~as.character(species_reported)
+      ) %>% 
+      setView(lng = -46.565744, lat =-23.677659, zoom= 2) 
+  }
   
   ### return
   return(plot_map)

@@ -111,7 +111,7 @@ sidebar = shinydashboard::dashboardSidebar(
       )
     ),
     shinydashboard::menuItem(
-      "Filter traits",
+      "Filter trait data",
       tabName = 'filter_trait',
       icon = shiny::icon('filter'),
       selected = FALSE,
@@ -119,18 +119,75 @@ sidebar = shinydashboard::dashboardSidebar(
       shinyWidgets::pickerInput(
         inputId = "filter_trait_source",
         label = "by source",
-        choices = c(
-          "experiment",
-          "field",
-          "herbarium",
-          "literature"
-        ),
-        selected = c(
-          "experiment",
-          "field",
-          "herbarium",
-          "literature"
-        ),
+        choices = c(),
+        selected = c(),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 1"
+        )
+      ),
+      shinyWidgets::pickerInput(
+        inputId = "filter_trait_sp",
+        label = "by species reported",
+        choices = c(),
+        selected = c(),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 1"
+        )
+      )
+    ),
+    shinydashboard::menuItem(
+      "Filter geographic data",
+      tabName = 'filter_geo',
+      icon = shiny::icon('filter'),
+      selected = FALSE,
+      
+      shinyWidgets::pickerInput(
+        inputId = "filter_geo_source",
+        label = "by source",
+        choices = c(),
+        selected = c(),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 1"
+        )
+      ),
+      shinyWidgets::pickerInput(
+        inputId = "filter_geo_country",
+        label = "by country",
+        choices = c(),
+        selected = c(),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 1"
+        )
+      ),
+      shinyWidgets::pickerInput(
+        inputId = "filter_geo_state",
+        label = "by state and province",
+        choices = c(),
+        selected = c(),
+        multiple = TRUE,
+        options = shinyWidgets::pickerOptions(
+          actionsBox = TRUE, 
+          size = 10,
+          selectedTextFormat = "count > 1"
+        )
+      ),
+      shinyWidgets::pickerInput(
+        inputId = "filter_geo_sp",
+        label = "by species",
+        choices = c(),
+        selected = c(),
         multiple = TRUE,
         options = shinyWidgets::pickerOptions(
           actionsBox = TRUE, 

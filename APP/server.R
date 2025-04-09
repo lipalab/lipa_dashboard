@@ -1,6 +1,6 @@
 ### PARA FAZER:
 ## link dos DOI;
-## filtro de unidades políticas para as coords;
+## filtro de unidades políticas para as coords (OK);
 ## dicionário interativo numa nova aba (OK);
 ## coluna com nomes aceitos;
 
@@ -57,37 +57,8 @@ names(geo_ds) = geo_ds_names
 
 server <- function(input, output, session) {
   
-  ### REACTIVE DATASETS
-  ## phylogenetic tree
-  phylo_tr = reactive({
-    ## select phylogenetic tree
-    tr = phylo_ds[[input$select_phylo_ds]]
-    return(tr)
-  })
-  ## trait dataframe
-  trait_df = reactive({
-    ## select trait datasets
-    tdl = trait_ds[input$select_trait_ds]
-    ## bind to dataframe
-    tdf = rbindlist(tdl, fill = T)
-    ## filter traits by source
-    tdf = tdf %>% filter(data_source %in% input$filter_trait_source)
-    return(tdf)
-  })
-  ## geographic dataframe
-  geo_df = reactive({
-    ## select trait datasets
-    gdl = geo_ds[input$select_geo_ds]
-    ## bind to dataframe
-    gdf = rbindlist(gdl, fill = T)
-    ## filter geo by species
-    # gdf = gdf %>% filter(species_reported %in% input$filter_geo_sp)
-    return(gdf)
-  })
-  ### REACTIVE ELEMENTS
-  ## select datasets - filters 
+  ### DATASET SELECTION
   observe({
-    
     updateSelectInput(
       session, 
       inputId = "select_phylo_ds",
@@ -106,9 +77,88 @@ server <- function(input, output, session) {
       choices = geo_ds_names,
       selected = geo_ds_names
     )
-      
   })
+  ### REACTIVE DATASET
+  ## phylogenetic tree
+  phylo_tr = reactive({
+    ## select phylogenetic tree
+    tr = phylo_ds[[input$select_phylo_ds]]
+    return(tr)
+  })
+  ## trait dataframe
+  trait_df = reactive({
+    ## select trait datasets
+    tdl = trait_ds[input$select_trait_ds]
+    ## bind to dataframe
+    tdf = rbindlist(tdl, fill = T)
+    ### return
+    return(tdf)
+  })
+  ## geographic dataframe
+  geo_df = reactive({
+    ## select trait datasets
+    gdl = geo_ds[input$select_geo_ds]
+    ## bind to dataframe
+    gdf = rbindlist(gdl, fill = T)
+    ## filter geo by species
+    # gdf = gdf %>% filter(species_reported %in% input$filter_geo_sp)
+    return(gdf)
+  })
+  ### REACTIVE ELEMENTS
+  ## trait filters
+  observe({
     
+    trait_source_vals = sort(unique(trait_df()$data_source))
+    trait_sp_vals = sort(unique(trait_df()$species_reported))
+    
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "filter_trait_source",
+      choices = trait_source_vals,
+      selected = trait_source_vals
+    )
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "filter_trait_sp",
+      choices = trait_sp_vals,
+      selected = trait_sp_vals
+    )
+    
+  })
+  ## geographic filters
+  observe({
+    
+    geo_source_vals = sort(unique(geo_df()$data_source))
+    geo_country_vals = sort(unique(geo_df()$collection_country))
+    geo_state_vals = sort(unique(geo_df()$collection_stateProvince))
+    geo_sp_vals = sort(unique(geo_df()$species_reported))
+    
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "filter_geo_source",
+      choices = geo_source_vals,
+      selected = geo_source_vals
+    )
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "filter_geo_country",
+      choices = geo_country_vals,
+      selected = geo_country_vals
+    )
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "filter_geo_state",
+      choices = geo_state_vals,
+      selected = geo_state_vals
+    )
+    shinyWidgets::updatePickerInput(
+      session,
+      inputId = "filter_geo_sp",
+      choices = geo_sp_vals,
+      selected = geo_sp_vals
+    )
+    
+  })
   ## trait names
   trait_names = reactive({
     tn = colnames(trait_df()) 
@@ -310,7 +360,8 @@ server <- function(input, output, session) {
           df = trait_df(),
           x_axis = input$selection_1,
           y_axis = input$selection_2,
-          data_source = input$selection_3
+          data_source = input$filter_trait_source,
+          species = input$filter_trait_sp
         )
       })
     } else {
@@ -321,7 +372,13 @@ server <- function(input, output, session) {
   observe({
     if(input$tabs == "geography"){
       output$plot_geography = leaflet::renderLeaflet({
-        plot_geo_fx(df = geo_df())
+        plot_geo_fx(
+          df = geo_df(),
+          dsource = input$filter_geo_source,
+          country = input$filter_geo_country,
+          state = input$filter_geo_state,
+          species = input$filter_geo_sp
+        )
       })
     } else {
       output$plot_geography = leaflet::renderLeaflet({NULL})
