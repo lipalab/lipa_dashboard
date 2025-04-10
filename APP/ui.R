@@ -2,27 +2,6 @@
 if (!require("plotly")) install.packages("plotly"); library("plotly")
 if (!require("leaflet")) install.packages("leaflet"); library("leaflet")
 
-### phylogeny datasets names
-phylo_ds_files = list.files(
-  path = "datasets",
-  pattern ="phylo"
-)
-phylo_ds_names = gsub(pattern = "phylo_|.tree", "", phylo_ds_files)
-
-### trait datasets names
-trait_ds_files =list.files(
-  path = "datasets",
-  pattern ="trait"
-)
-trait_ds_names = gsub(pattern = "trait_|.csv", "", trait_ds_files)
-
-### geographic datasets names
-geo_ds_files =list.files(
-  path = "datasets",
-  pattern ="geo"
-)
-geo_ds_names = gsub(pattern = "geo_|.csv", "", geo_ds_files)
-
 ### HEADER
 header = shinydashboard::dashboardHeader(
   title = "LIPA dashboard",
