@@ -2,7 +2,7 @@
 ## link dos DOI (OK);
 ## filtro de unidades políticas para as coords (OK);
 ## dicionário interativo numa nova aba (OK);
-## coluna com nomes aceitos;
+## coluna com nomes aceitos ;
 
 if (!require("tidyverse")) install.packages("tidyverse"); require("tidyverse")
 if (!require("data.table")) install.packages("data.table"); require("data.table")
@@ -21,8 +21,8 @@ source("auxiliar.R")
 ############################### LOADING DATASETS ###############################
 
 ### home data
-ds_table = read.csv("datasets/dataset_table.csv")
-metadata = read.csv("datasets/metadata.csv")
+ds_table = read.csv("datasets/0_dataset_table.csv")
+metadata = read.csv("datasets/0_metadata.csv")
   
 ### phylogeny datasets
 phylo_ds_files = list.files(
