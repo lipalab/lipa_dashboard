@@ -168,7 +168,7 @@ server <- function(input, output, session) {
   ## trait names
   trait_names = reactive({
     tn = colnames(trait_df()) 
-    tn = tn[!grepl("key|data_source|species_reported|reference", tn)]
+    tn = tn[!grepl("key|data_source|species_reported|reference|notes", tn)]
     tn = sort(tn)
     return(tn)
   })

@@ -487,8 +487,8 @@ plot_geo_fx = function(df,
     plot_map = leaflet(data = df) %>%
       addProviderTiles(providers$OpenTopoMap) %>% 
       addCircleMarkers(
-        lng = ~longitude, 
-        lat = ~latitude, 
+        lng = ~coord_longitude, 
+        lat = ~coord_latitude, 
         radius = 2.5,
         color = "black",
         weight = 2,
