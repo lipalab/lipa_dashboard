@@ -1,8 +1,4 @@
 ### PARA FAZER:
-## link dos DOI (OK);
-## filtro de unidades políticas para as coords (OK);
-## dicionário interativo numa nova aba (OK);
-## coluna com nomes aceitos ;
 
 if (!require("tidyverse")) install.packages("tidyverse"); require("tidyverse")
 if (!require("data.table")) install.packages("data.table"); require("data.table")

@@ -2,7 +2,7 @@ variable,description,type,scale
 bacteroid_type,The type of intracellular structure formed in the root system of a plant when infected by rhizobia.,categorical,-
 experiment_day,The number of days elapsed since the start of an experiment.,numeric,day
 experiment_flower_id,The identification code of a flower in a given experiment. Equal codes may not represent the same flower across experiments.,categorical,-
-experiment_matrix_id,The identification code of a plant matrix (mother plant) in a given experiment. Equal codes may not represent the same plant matrix across experiments.,categorical,-
+experiment_matrix_id,The identification code of a matrix (mother plant) in a given experiment. Equal codes may not represent the same matrix across experiments.,categorical,-
 experiment_plant_id,The identification code of a plant in a given experiment. Equal codes may not represent the same plant across experiments.,categorical,-
 experiment_treatment,The treatement applied to an observation in a given experiment. Equal names may not represent the same type of treament across experiments.,categorical,-
 flower_bud_n,The number of flower buds counted on a plant.,numeric,count
@@ -15,25 +15,43 @@ flower_visitor_coupling,A flower-visitor phenotypic coupling index. It is calcul
 flowering_first_day,The number of days elapsed until the first flowering of a plant.,numeric,day
 flowering_peak_day,The number of days elapsed until the peak flowering of a plant.,numeric,day
 flowering_presence,Whether a plant was flowering.,logic,-
+fruit_n,The number of fruits counted on a plant.,numeric,count
 fruit_placentation_n,The number of placentations counted in a fruit.,numeric,count
 fruiting_presence,Whether a plant formed fruits.,logic,-
+leaf_efn_active_n,The number of leaves with active extrafloral nectaries counted on a plant.,numeric,count
+leaf_max_length,The maximum distance measured along the main longitudinal axis of all leaves found on a plant.,numeric,centimeter (cm)
 leaf_n,The number of leaves counted on a plant.,numeric,count
+leaf_samp_mass,The summed mass of leaves sampled from a plant.,numeric,gram (g)
+leaf_samp_n,The number of leaves sampled from a plant.,numeric,count
 leaf_scar_n,The number of leaf scars counted on a plant.,numeric,count
+leaf_total_mass,The total mass of all leaves from a plant. ,numeric,gram (g)
+matrix_mortality_index,The total number of plants devided by the number of surviving plants from a same matrix (mother plant) in a given experiment.,numeric,total_plant:surviving_plant
+matrix_mortality_n,The number of dead plants from a same matrix (mother plant) in a given experiment.,numeric,count
+matrix_mortality_ratio,The number of dead plants divided by the total number of plants from a same matrix (mother plant) in a given experiment.,numeric,dead_plant:total_plant
+matrix_plant_n,The total number of plants deriving from a same matrix (mother plant) in a given experiment.,numeric,count
+matrix_survival_n,The number of surviving plants from a same matrix (mother plant) in a given experiment.,numeric,count
+nodule_n,The number of root nodules counted on a plant.,numeric,count
 nodule_presence,Whether a plant had nodules in its root system.,logic,-
+nodule_samp_mass,The summed mass of root nodules sampled from a plant.,numeric,gram (g)
+nodule_samp_n,The number of root nodules sampled from a plant.,numeric,count
+nodule_total_mass,The total mass of all root nodules from a plant.,numeric,gram (g)
 plant_height,The linear distance between the ground layer and the upper boundary of the plant shoot.,numeric,meter (m)
 pollen_deposited_n,The number of pollen grains counted on a flower stigma.,numeric,count
 pollen_remained_n,The number of pollen grains counted from all anthers of a visited flower.,numeric,count
 pollen_removed_n,The difference of pollen grains between unvisited and visited flowers.,numeric,count
+root_total_mass,The total mass of all root system from a plant.,numeric,gram (g)
 seed_inviable_n,The number of inviables seeds counted in a fruit.,numeric,count
 seed_lost_n,The number of lost seeds counted in a fruit.,numeric,count
 seed_viable_n,The number of viables seeds counted in a fruit. ,numeric,count
-seed_viable_ratio,The number of viables seeds divided by the number of placentation in a fruit.,numeric,seed:placentation
+seed_viable_ratio,The number of viables seeds divided by the number of placentations in a fruit.,numeric,seed:placentation
+stem_n,The number of stems counted on a plant.,numeric,count
+stem_total_mass,The total mass of all stems from a plant.,numeric,gram (g)
 visitor_abdomen_width,The linear distance across the widest part of the abdomen of a bee visitor.,numeric,milimeter (mm)
 visitor_amplitude_max,The maximum relative peak of amplitude of vibrational pulses by a bee visitor.,numeric,Decibels (dB)
 visitor_amplitude_mean,The average relative peak of amplitude of vibrational pulses by a bee visitor.,numeric,Decibels (dB)
 visitor_amplitude_min,The minimum relative peak of amplitude of vibrational pulses by a bee visitor.,numeric,Decibels (dB)
 visitor_amplitude_sd,The standard deviation of the average relative peak of amplitude during virbational pulses of a bee visitor.,numeric,Decibels (dB)
-visitor_buzzing_pulse_ratio,The buzzing time divided by the number of vibration pulses,numeric,second:pulse
+visitor_buzzing_pulse_ratio,The buzzing time divided by the number of vibration pulses.,numeric,second:pulse
 visitor_buzzing_time,The time taken by a bee visitor vibrating and extracting pollen grains from poricidal anthers.,numeric,second (s)
 visitor_displacement_max,"The greatest circular movement by a bee visitor, either clockwise or counterclockwise movements, between the vibrational pulses applied to the anthers. ",numeric,degree (°) 
 visitor_displacement_mean,"The sum of all circular movements by a bee visitor divided by the number of vibrational pulses applied to the anthers. The calculation disconsiders the position during the first vibrational pulse, which is set to zero.",numeric,degree:pulse
